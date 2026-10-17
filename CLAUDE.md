@@ -16,7 +16,7 @@ python3 build.py
 python3 scripts/recalc.py public/remote-sensing-phenomenology.xlsx   # expect "status": "success", total_errors 0
 git add -A && git commit && git push                                  # backup only; the site is live as soon as build.py finishes
 ```
-Dependencies: Python 3.10+, `openpyxl`. LibreOffice only for recalc.
+Dependencies: Python 3.10+, `openpyxl`. LibreOffice only for recalc. A local `.venv/` (gitignored) holds openpyxl: `python3 -m venv .venv && .venv/bin/pip install openpyxl`, then build with `.venv/bin/python build.py`.
 
 ## Data conventions
 - IDs: techniques `T01…`, concepts `C01…`. Keep them stable; the page links by ID.
@@ -25,6 +25,13 @@ Dependencies: Python 3.10+, `openpyxl`. LibreOffice only for recalc.
 - Concepts carry `dubious: true` when the physics does not close at orbital ranges; the grid excludes them from concept counts but still draws them (dashed).
 - `cellNotes` keys are `source|interaction`; `kind` is `ruled`, `open`, `filled` or `concept`.
 - Classification: reflection = geometric-optics regime; radar/lidar backscatter = elastic scattering; sounders count under emission and absorption; aperture synthesis is emission + correlation receiver, not phase.
+
+## Design and color
+- The palette is colorblind-safe by construction. TRL bands are ordinal, so they share one hue (blue) stepped only in lightness, each marker prints its TRL digit, and concepts are circles while techniques are squares. Orange is the single accent, for verify flags and keyboard focus. No pair of colors differs mainly along red-green.
+- The ramps were validated with the dataviz skill's ordinal checker in light and dark mode. Re-run it if any color changes: `node validate_palette.js "<b13,b46,b78,b9>" --ordinal --mode light|dark --surface <panel>`.
+- Digits on the two lighter steps are dark ink and on the two darker steps white (swapped in dark mode). Keep every digit at 4.5:1 or better.
+- Colors are CSS custom properties at the top of the template in `build.py`, defined three times: light, OS dark, and the `data-theme="dark"` toggle. Change all three together.
+- The page has a sticky section nav, a theme toggle (auto, light, dark, remembered per browser), and a custom hover tooltip on grid markers. It must stay usable at phone width with no sideways page scroll.
 
 ## Things to keep true
 - Both outputs come from one `build.py` run. Never hand-edit `public/`.
