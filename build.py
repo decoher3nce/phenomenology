@@ -3,7 +3,10 @@ from openpyxl import Workbook
 from openpyxl.styles import Font, Alignment, PatternFill
 from openpyxl.utils import get_column_letter
 
-D = json.load(open('/home/claude/data.json'))
+import os, pathlib
+ROOT = pathlib.Path(__file__).resolve().parent
+OUT = ROOT / 'public'; OUT.mkdir(exist_ok=True)
+D = json.load(open(ROOT / 'data.json'))
 DATA_JS = json.dumps(D, ensure_ascii=False).replace('</', '<\\/')
 
 HTML = r"""<!DOCTYPE html>
@@ -452,7 +455,7 @@ footer{margin-top:4rem;border-top:1px solid var(--rule-strong);padding-top:1rem;
 </body>
 </html>
 """
-open('/mnt/user-data/outputs/remote-sensing-phenomenology.html', 'w').write(HTML.replace('__DATA__', DATA_JS))
+open(OUT / 'index.html', 'w').write(HTML.replace('__DATA__', DATA_JS))
 
 # ---------------------------------------------------------------- XLSX
 wb = Workbook()
@@ -574,5 +577,5 @@ ws.cell(row=ws.max_row, column=1).font = Font(name=FONT, italic=True, size=9)
 ws = wb.create_sheet('Filters')
 sheet(ws, ['Filter', 'What it decides'], [[f['name'], f['text']] for f in D['filters']], [26, 110])
 
-wb.save('/home/claude/remote-sensing-phenomenology.xlsx')
-print('built', len(D['techniques']), 'techniques,', len(D['concepts']), 'concepts')
+wb.save(OUT / 'remote-sensing-phenomenology.xlsx')
+print('built', len(D['techniques']), 'techniques,', len(D['concepts']), 'concepts ->', OUT)

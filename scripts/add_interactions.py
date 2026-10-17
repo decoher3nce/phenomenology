@@ -1,5 +1,6 @@
+# One-off migration, already applied to data.json. Kept for provenance; run from the repo root if ever needed.
 import json
-D = json.load(open('/home/claude/data.json'))
+D = json.load(open('data.json'))
 
 X = {
  'refl': dict(
@@ -83,5 +84,5 @@ D['interactionNote'] = ('Classification conventions used throughout: reflection 
 
 for i in D['interactions']:
     i.update(X[i['id']])
-json.dump(D, open('/home/claude/data.json','w'), ensure_ascii=False, indent=1)
+json.dump(D, open('data.json','w'), ensure_ascii=False, indent=1)
 print('ok', [i['id'] for i in D['interactions']])

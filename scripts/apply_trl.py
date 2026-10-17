@@ -1,5 +1,6 @@
+# One-off migration, already applied to data.json. Kept for provenance; run from the repo root if ever needed.
 import json
-D = json.load(open('/home/claude/data_v1.json'))
+D = json.load(open('data_v1.json'))
 
 # TRL per item. Judged against use FROM SPACE for the stated application, on the NASA 1–9 scale.
 # Tuple: (trl, note or None, verify flag). The note explains any non-obvious call.
@@ -105,5 +106,5 @@ D['meta']['caveat'] = ('TRL values are my estimates against NASA definitions, ju
   'from knowledge through mid-2026. They are hypotheses to verify, and the TRL of a technique is not the TRL of any specific instrument. '
   'Items marked verify sit in the 2025–2027 pathfinder window where a single launch moves the number. Novelty claims remain the camouflaged failure mode.')
 D['meta']['subtitle'] = 'A source × interaction grid of every established technique, the empty cells, and the concepts that could fill them, with technology readiness per entry'
-json.dump(D, open('/home/claude/data.json','w'), ensure_ascii=False, indent=1)
+json.dump(D, open('data.json','w'), ensure_ascii=False, indent=1)
 print('ok', sum(1 for t in D['techniques'] if t['verify']), 'techniques and', sum(1 for c in D['concepts'] if c['verify']), 'concepts flagged verify')
