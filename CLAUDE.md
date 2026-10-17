@@ -8,6 +8,7 @@ A static reference site and a mirrored Excel workbook, both generated from one d
 - `public/` — what the gateway serves. Regenerated output; committed so the GitHub copy is complete on its own.
 - `scripts/recalc.py` — recalculates workbook formulas with LibreOffice and reports errors; run after every build if `soffice` is installed. Needs `scripts/office/`.
 - `scripts/apply_trl.py`, `scripts/add_interactions.py` — one-off migrations already applied. Provenance only.
+- `scripts/calc/` — the "first calculation" for a concept, one stdlib script each, assumptions at the top, verdict at the bottom. When a concept's TRL moves on a calculation, the script is the evidence and `trlNote` names it.
 - Hosting lives outside this repo: the home Caddy gateway (`~/claude-code/gateway/Caddyfile`, see `PUBLISHING.md` there) has a `handle_path /phenomenology/*` block that `file_server`s this checkout's `public/` and rewrites `/workbook` to the xlsx. Reload after editing it: `caddy reload --config ~/claude-code/gateway/Caddyfile --adapter caddyfile` (admin API, no sudo).
 
 ## Workflow
@@ -40,6 +41,5 @@ Dependencies: Python 3.10+, `openpyxl`. LibreOffice only for recalc. A local `.v
 - Status tags and novelty claims in the data are estimates from mid-2026 knowledge. When adding or changing an entry, say in `trlNote` or `prior` what the basis is.
 
 ## Open items
-- The clickable column headers (interaction drawer) were verified by parse only, not in a browser. Confirm once.
 - The site is served from this working copy, so a half-finished edit to `public/` is visible immediately. Run `build.py` to completion; never hand-edit `public/`.
 - The page uses only fragment links, which is what makes it safe under the `/phenomenology/` sub-path. Keep it that way (no absolute `/...` hrefs in `build.py`).

@@ -3,8 +3,8 @@
   "title": "Phenomenology of remote sensing from space",
   "subtitle": "A source × interaction grid of every established technique, the empty cells, and the concepts that could fill them, with technology readiness per entry",
   "date": "2026-09-13",
-  "caveat": "TRL values are my estimates against NASA definitions, judged for use from space in the stated application, from knowledge through mid-2026. They are hypotheses to verify, and the TRL of a technique is not the TRL of any specific instrument. Items marked verify sit in the 2025–2027 pathfinder window where a single launch moves the number. Novelty claims remain the camouflaged failure mode.",
-  "updated": "2026-10-13"
+  "caveat": "TRL values are my estimates against NASA definitions, judged for use from space in the stated application, from knowledge through mid-2026 and checked against mission status and the literature on 2026-10-17. They remain hypotheses, and the TRL of a technique is not the TRL of any specific instrument. Items marked verify sit where a scheduled data release or launch will move the number. Novelty claims were the weakest field: of thirteen rated high, one survived a search, and each concept's prior-art field now names what was found.",
+  "updated": "2026-10-17"
  },
  "sources": [
   {
@@ -709,9 +709,9 @@
    "band": "5–100 µm",
    "examples": "CERES, FORUM (far-IR, 2027), PREFIRE",
    "summary": "Outgoing longwave; the far-IR beyond 15 µm carries half of it and was unmeasured spectrally until PREFIRE.",
-   "trl": 7,
-   "trlNote": "Broadband longwave is TRL 9 (CERES). Spectrally resolved far-IR is TRL 7: PREFIRE CubeSats flew 2024; FORUM not yet.",
-   "verify": true
+   "trl": 9,
+   "trlNote": "Broadband longwave is TRL 9 (CERES). Spectrally resolved far-IR: the PREFIRE CubeSats launched 2024-05/06, L1–L3 products are public, spectral OLR was validated in peer review (JGR Atmospheres 2026), and the mission was extended through at least 2026-09; TRL 9 as of 2026-10. FORUM, the full-resolution far-IR FTS, is contracted for a late-2027 Vega-C launch.",
+   "verify": false
   },
   {
    "id": "T27",
@@ -867,7 +867,8 @@
    "name": "Terrestrial gamma-ray flashes and TLEs",
    "src": "transient",
    "int": [
-    "emis"
+    "emis",
+    "inel"
    ],
    "geom": [
     "nadir",
@@ -878,7 +879,7 @@
    "examples": "Fermi GBM, RHESSI, ASIM, TARANIS (lost)",
    "summary": "Relativistic runaway electron avalanches in thunderstorms produce MeV photon flashes; sprites and elves imaged from the ISS.",
    "trl": 9,
-   "trlNote": "",
+   "trlNote": "Inelastic added 2026-10-17: the TLE half of this entry (sprites, elves, halos imaged by ISUAL and ASIM) is lightning-pumped N2 emission, so the technique also fills the natural-transients × inelastic cell.",
    "verify": false
   },
   {
@@ -1044,8 +1045,8 @@
    "band": "X, L, P",
    "examples": "TanDEM-X experiments, BIOMASS TomoSAR mode",
    "summary": "Many baselines resolve the vertical scattering profile inside forest canopies and ice; 3D SAR.",
-   "trl": 7,
-   "trlNote": "TanDEM-X experiments; BIOMASS tomographic mode in commissioning.",
+   "trl": 8,
+   "trlNote": "TanDEM-X multi-baseline experiments gave the first spaceborne tomograms. Biomass has been acquiring 7-image tomographic stacks since 2025-11-21 (phase runs to 2027-04); tomographic L2B height and biomass products are scheduled for 2027-05 and no on-orbit tomograms were published as of 2026-10. TRL 8; re-check at the L2B release.",
    "verify": true
   },
   {
@@ -1063,9 +1064,9 @@
    "band": "P (435 MHz), L",
    "examples": "BIOMASS, NISAR, ALOS-4, SAOCOM",
    "summary": "Long wavelengths pass through canopy and dry sand or ice; forest biomass, subsurface paleochannels, ice-sheet structure.",
-   "trl": 8,
-   "trlNote": "L-band is TRL 9. P-band from orbit is first flown on BIOMASS (2025); 8 until data are proven.",
-   "verify": true
+   "trl": 9,
+   "trlNote": "L-band is long-standing TRL 9 (ALOS-2/4, SAOCOM, NISAR). P-band from orbit: Biomass launched 2025-04-29, commissioning complete and L1 products open 2026-01, first L2A forest-height product 2026-06; TRL 9 as of 2026-10. Above-ground-biomass L2B product scheduled 2027-05.",
+   "verify": false
   },
   {
    "id": "T46",
@@ -1266,9 +1267,9 @@
    "band": "1572 nm CO2, 1645 nm CH4",
    "examples": "ACDL (DQ-1, China, 2022), MERLIN (planned)",
    "summary": "On/off-line pulse pairs give column CO2 or CH4 day, night and at high latitude where passive SWIR fails.",
-   "trl": 8,
-   "trlNote": "ACDL on DQ-1 (China, 2022) is reported flown with published data; I have less visibility into performance.",
-   "verify": true
+   "trl": 9,
+   "trlNote": "CO2 IPDA: ACDL on DQ-1 (launched 2022-04-16) has produced global XCO2 since 2022, validated against TCCON at about 0.2 ppm bias and 1.5 ppm RMSE in 2025–26 literature; TRL 9 for CO2 as of 2026-10. CH4 IPDA at 1645 nm remains unflown; MERLIN launch is listed for 2028–2029.",
+   "verify": false
   },
   {
    "id": "T57",
@@ -1431,8 +1432,8 @@
    "examples": "Mini-EUSO (ISS), TUS, POEMMA (concept)",
    "summary": "Ultra-high-energy cosmic rays make N2 fluoresce along the shower; the same fast UV cameras see transient luminous events and meteors.",
    "trl": 6,
-   "trlNote": "Mini-EUSO and TUS operated in orbit and saw TLEs and meteors; a confirmed UHECR detection from orbit is not established.",
-   "verify": true
+   "trlNote": "Mini-EUSO (ISS, 2019–) and TUS operated in orbit and observed TLEs and meteors; after five years Mini-EUSO reports no confirmed UHECR detection (arXiv 2601.11458, 2026-01). No orbital successor is scheduled; the POEMMA balloon flies 2027. TRL 6 as of 2026-10.",
+   "verify": false
   },
   {
    "id": "T66",
@@ -1601,8 +1602,8 @@
    "examples": "Ground and airborne demos; passive SAR with Starlink downlinks in the literature",
    "summary": "Correlate a reference channel against surface echoes of a comm or broadcast signal to image or track with no transmitter of your own.",
    "trl": 5,
-   "trlNote": "Ground and airborne demos, including Starlink-illuminated passive SAR; no orbital receiver.",
-   "verify": true
+   "trlNote": "Ground and airborne demonstrations only, including Starlink-illuminated passive SAR imagery (IEEE JSTARS 2024) and a German MoD Starlink passive radar (2024-01); no orbital receiver has flown and none is on a near-term manifest. TRL 5 as of 2026-10.",
+   "verify": false
   },
   {
    "id": "T75",
@@ -1637,7 +1638,7 @@
    "examples": "GeoSTAR, GIMS (China, in development)",
    "summary": "A sparse array correlated in real time synthesizes a filled aperture for microwave sounding from GEO, where a mechanical dish would be impractically large.",
    "trl": 5,
-   "trlNote": "GeoSTAR ground prototype; GIMS (China) status uncertain.",
+   "trlNote": "GeoSTAR and GIMS/GIMS-II are ground demonstrators. China's FY-4M geostationary microwave sounder is planned for 2026–30 (CMA, 2026-04), and the published design descriptions found point to a 5 m real-aperture sounder rather than aperture synthesis, though that reading could not be confirmed from the primary paper. TRL 5 as of 2026-10; re-check at FY-4M launch.",
    "verify": true
   },
   {
@@ -1652,11 +1653,11 @@
    ],
    "rec": "quant",
    "band": "Rb atom interferometer",
-   "examples": "NASA CAL (ISS), Tiangong CACES, CARIOQA-PMP (planned)",
+   "examples": "NASA CAL (ISS), CSSAI (Tiangong), CARIOQA-PMP (planned)",
    "summary": "Atom-interferometer accelerometers have operated in microgravity; the step to a gradiometer is the concept in the next list.",
-   "trl": 6,
-   "trlNote": "Cold-atom systems operated in orbit (CAL, CACES); accelerometer-grade performance for gravimetry not yet shown.",
-   "verify": true
+   "trl": 7,
+   "trlNote": "Atom-interferometer inertial sensing has been demonstrated in orbit: NASA CAL dual-species interferometry (ISS, Nature 2023) and CSSAI on Tiangong (cold-atom gyroscope and accelerometer, about 1 µm s⁻² and 17 µrad s⁻¹, 2024–25). Gravimetry-grade performance has not been shown; the CARIOQA pathfinder is in Phase B for an early-2030s launch. TRL 7 as of 2026-10.",
+   "verify": false
   },
   {
    "id": "T78",
@@ -1730,12 +1731,12 @@
     "bistatic"
    ],
    "rec": "quant",
-   "novelty": "high",
+   "novelty": "low",
    "physics": "Atoms excited to Rydberg states have enormous electric dipole moments. An RF field resonant with a Rydberg transition splits the electromagnetically-induced-transparency line by the Rabi frequency, which is set by the field amplitude and a known dipole matrix element. The readout is therefore self-calibrated to SI units, tunable from ~MHz to THz, and needs no wavelength-sized antenna.",
    "application": "Broadband passive microwave radiometry and RF geolocation in a CubeSat volume; THz limb sounding without heterodyne front-ends.",
    "failure": "Sensitivity still trails cryogenic LNAs by an order of magnitude or more; laser and vapor-cell reliability in vacuum and radiation. The win is bandwidth and calibration, not noise floor.",
    "first": "Compare noise-equivalent field against a state-of-the-art radiometer at 6, 37 and 183 GHz for the same integration time.",
-   "prior": "Extensive ground demos, DARPA-funded programs; no flight recalled.",
+   "prior": "Spaceborne Rydberg-atom RF sensing is the target of funded agency programs: NASA NIAC Phase I/II Quantum Rydberg Radar (JPL, 2023; balloon demonstration planned), NASA ESTO's QuARREM Rydberg hyperspectral radiometer (Infleqtion, 2025), ESA's RYDAR receiver prototype (Warsaw, 2025), and ground soil-moisture reflectometry with satellite signals of opportunity (Arumugam et al., Sci. Rep. 2024). No on-orbit flight reported. Checked 2026-10-17.",
    "trl": 4,
    "trlNote": "Lab and field demos of Rydberg receivers; no space-environment validation.",
    "verify": false,
@@ -1754,12 +1755,12 @@
     "nadir"
    ],
    "rec": "coh",
-   "novelty": "high",
+   "novelty": "medium",
    "physics": "A heterodyne lidar resolves surface velocity via Δf = 2v/λ; at 1.5 µm, 1 mm/s is 1.3 kHz. Machinery, engines and structures vibrate at characteristic frequencies that show up as sidebands on the return.",
    "application": "Industrial activity monitoring, centrifuge-hall and generator signatures, bridge and dam modal health.",
    "failure": "Platform velocity of 7.5 km/s and speckle decorrelation limit coherent integration to microseconds. Needs a co-located reference return (a static surface or retroreflector) for differential measurement, and dwell long enough to resolve the vibration lines.",
    "first": "Speckle decorrelation time vs spot size and orbital velocity, then the achievable frequency resolution per dwell.",
-   "prior": "Airborne LDV demonstrated (DARPA and others); no orbital demo recalled.",
+   "prior": "Proposed by JPL as an orbital vibrometer for ground targets (NASA Tech Briefs, 2009) and claimed as a space use in a Caltech/NASA patent (US 8,210,044, 2012); the orbital speckle-noise problem was analysed for asteroid seismology by Courville (Adv. Space Res., 2019). Airborne and vehicle LDV are demonstrated; no orbital demonstration against Earth targets found. Checked 2026-10-17.",
    "trl": 4,
    "trlNote": "Airborne LDV validates the sensor, not the orbital speckle-decorrelation problem.",
    "verify": false,
@@ -1779,12 +1780,12 @@
     "nadir"
    ],
    "rec": "incoh",
-   "novelty": "high",
+   "novelty": "medium",
    "physics": "Sodium atoms at 85–95 km, excited by a 589 nm laser, precess in the geomagnetic field at the Larmor frequency. Modulating the laser at that frequency drives spin polarization and changes fluorescence; sweeping the modulation finds the resonance and hence |B| to nT.",
    "application": "Global mesospheric magnetometry along track; a layer no in-situ instrument occupies, sensitive to ionospheric current systems.",
    "failure": "Laser power and beam quality from orbit; fluorescence photon budget at 500+ km; competing OH and background light. Ground systems already do this with 20 W lasers over ~90 km paths.",
    "first": "Fluorescence photon rate at the spacecraft for a 20 W CW laser and a 1 m aperture; compare to shot-noise requirement for 1 nT.",
-   "prior": "Ground LGS magnetometry validated; never done from space to my knowledge.",
+   "prior": "Ground sodium-layer magnetometry was proposed by Higbie et al. (PNAS 2011) and demonstrated by Kane et al. (JGR 2018). A satellite-assisted variant with the laser on the ground and a polarimeter in LEO was proposed by Dang et al. (2021). The all-from-orbit configuration with the laser on the spacecraft has not been proposed in detail or flown. Checked 2026-10-17.",
    "trl": 3,
    "trlNote": "Ground LGS magnetometry proves the physics; space geometry untested.",
    "verify": false,
@@ -1804,14 +1805,14 @@
     "temporal"
    ],
    "rec": "pc",
-   "novelty": "high",
+   "novelty": "medium",
    "physics": "LED and discharge lamps modulate at twice the mains frequency (100 or 120 Hz) with modulation depth of a few to tens of percent. A photon-counting array sampled above 300 Hz on a small nighttime field of view recovers the modulation frequency and phase.",
    "application": "Map which regions run on which synchronous grid; detect islanding, generator-powered sites, and frequency excursions that precede grid stress; identify off-grid installations.",
-   "failure": "Photon rate per pixel per millisecond may be too low for city-block-scale pixels; atmospheric scintillation and platform jitter add noise near 100 Hz; mixed lamp types dilute modulation depth.",
+   "failure": "Photon rate is not the limit (see TRL basis). The risks are platform: holding a 100 m cell for a second from LEO needs body pointing or back-scan, pointing-jitter power near 100–120 Hz masquerades as signal, and mixed lamp types can dilute the modulation depth below 1 %.",
    "first": "Photon rate for a 100 m ground pixel at typical urban radiance with a 30 cm aperture; SNR at 120 Hz over a 1 s dwell.",
-   "prior": "Airborne flicker detection exists; no space attempt recalled.",
-   "trl": 2,
-   "trlNote": "",
+   "prior": "Flicker-based grid sensing is established from the ground (Bianco et al., NYC hypertemporal imaging, 2016; Sheinin et al., ICCP 2018). From orbit, Elvidge et al. (Remote Sensing 2022) showed that VIIRS DNB's millisecond dwell aliases lighting flicker into nightly radiance variance without resolving frequency or phase. No spaceborne or airborne sensor sampling above Nyquist to recover mains frequency was found; the earlier airborne claim did not survive a search. Checked 2026-10-17.",
+   "trl": 3,
+   "trlNote": "First calculation run 2026-10-17 (scripts/calc/c04_powerline_flicker.py). A 30 cm aperture at 500 km collects about 3×10⁶ detected photons per second from a 100 m urban pixel at 100 nW cm⁻² sr⁻¹ and 3×10⁵ from a suburban one. With 10 % effective modulation the 120 Hz line has SNR of order 100 and 40 over a 1 s stare, and depths below 1 % stay detectable. Photons are not the limit; TRL 3 on the analytic budget. Untested: the 1 s stare on a 100 m cell against 7 km s⁻¹ ground motion, and pointing jitter near 100–120 Hz.",
    "verify": false,
    "dubious": false
   },
@@ -1830,14 +1831,14 @@
     "s2s"
    ],
    "rec": "coh",
-   "novelty": "high",
+   "novelty": "low",
    "physics": "A laser crosslink between two satellites at different orbital shells or planes can graze the limb. Refractive bending, scintillation spectrum and weak-line absorption at 1550 nm encode density, temperature, turbulence and (weakly) water vapor and CO2 along the tangent path.",
    "application": "Thousands of free occultation events per day from megaconstellations at optical wavelengths, complementing GNSS-RO with higher vertical resolution.",
    "failure": "Geometry: same-plane links at ~550 km have tangent heights near 500 km, above the atmosphere. Only inter-plane and inter-shell links graze low; link acquisition may drop the link before it reaches the troposphere. Comm lasers are fixed-wavelength, so absorption is limited to whatever lines fall in-band.",
    "first": "Sweep a real constellation's crosslink topology for tangent-height distribution vs time.",
-   "prior": "ACCURATE LEO–LEO laser occultation concept (Kirchengast et al.) never flew; the opportunistic version is not recalled in the literature.",
+   "prior": "Observed once, incidentally: the OICETS–ARTEMIS laser link of April 2006 recorded atmospheric power fluctuations as OICETS set behind the limb (Löscher, AMT 2010). Perlot and Sofieva (ICSOS 2009) proposed adapting laser-communication terminals for occultation sounding; Liu, Kirchengast et al. (2021) simulated LEO–LEO occultation statistics; the dedicated ACCURATE laser-occultation mission was proposed to ESA in 2005 and not selected. The megaconstellation tangent-height census has not been done. Checked 2026-10-17.",
    "trl": 2,
-   "trlNote": "Geometry study not yet done.",
+   "trlNote": "Geometry study not yet done. The 2006 incidental occultation record on a comm link shows the signal exists in space; no retrieval has been attempted from it, so the TRL is left as judged.",
    "verify": false,
    "dubious": false
   },
@@ -1885,9 +1886,9 @@
    "application": "A geoid observable independent of mass-change ranging and gradiometry; unification of height systems across continents; tests of relativity.",
    "failure": "Requires 10⁻¹⁸ clock stability in orbit and a link that transfers time at the same level through the atmosphere; ACES (2025, ISS) works at 10⁻¹⁶ with microwave clocks.",
    "first": "Verify ACES results and link performance; cost the optical-clock and link upgrade.",
-   "prior": "ACES flown 2025; optical-clock versions proposed, not flown. Verify status.",
+   "prior": "ACES launched to the ISS in April 2025 and, as of mid-2026, was still in commissioning with science data taken since October 2025 and no published clock-comparison result (ESA mission page; SYRTE announcement, May 2026). No optical clock has operated as a clock in orbit: the strontium lattice-clock optical system on the Chinese Space Station reached in-orbit laser stabilisation and a MOT (Rev. Sci. Instrum. 96, 2025); ESA's I-SOC Pathfinder is unscheduled. Checked 2026-10-17.",
    "trl": 4,
-   "trlNote": "Ground optical-clock chronometric geodesy demonstrated; ACES (2025) in orbit at microwave-clock stability.",
+   "trlNote": "Ground optical-clock chronometric geodesy demonstrated. ACES (ISS, 2025) is a microwave-clock pathfinder at the 10⁻¹⁶ level, still commissioning as of mid-2026. TRL 4 stands; re-check when the first ACES redshift or time-transfer paper appears, expected 2026–2027.",
    "verify": true,
    "dubious": false
   },
@@ -1907,12 +1908,12 @@
    "novelty": "low",
    "physics": "Two cold-atom clouds separated by a baseline are interrogated with the same laser pulses; the differential phase gives the gravity gradient with no drift, since the reference is an atomic transition rather than a proof mass.",
    "application": "GOCE-class static gravity with long-term stability; sub-surface density mapping for aquifers, magma systems, voids.",
-   "failure": "Sensitivity per shot is limited by atom number and interrogation time; rotation of the spacecraft couples in; NASA and ESA pathfinders may already have flown.",
+   "failure": "Sensitivity per shot is limited by atom number and interrogation time; rotation of the spacecraft couples in; the NASA and ESA pathfinders that would settle it are now 2030-class launches.",
    "first": "Check flight status of NASA QGGPf and ESA CARIOQA before doing anything else.",
-   "prior": "Pathfinders slated ~2026 (NASA) and ~2030 (ESA); 'imminent', not 'never'.",
+   "prior": "Neither pathfinder has flown. NASA's QGGPf is contracted for a 2030 LEO launch (Infleqtion follow-on award, August 2026); ESA/CNES CARIOQA entered Phase B in October 2025 with an engineering-model laser source delivered September 2026 and launch in the early 2030s. The only orbital atom interferometer is CSSAI on the China Space Station (Li et al., National Science Review 2025), a single-sensor gyroscope and accelerometer at the µm s⁻² level, not a gradiometer. Checked 2026-10-17.",
    "trl": 5,
-   "trlNote": "Ground atom gradiometers exist; NASA QGGPf and ESA CARIOQA pathfinders scheduled in this window.",
-   "verify": true,
+   "trlNote": "Ground atom gradiometers exist and CSSAI (2025) validated cold-atom interferometry in orbit, which supports 5; no differential two-cloud gradiometer has been validated in a relevant environment, so 4 is defensible. Pathfinders slipped to 2030 and beyond, so the number will not move in this window.",
+   "verify": false,
    "dubious": false
   },
   {
@@ -1929,12 +1930,12 @@
     "bistatic"
    ],
    "rec": "corr",
-   "novelty": "high",
+   "novelty": "low",
    "physics": "Hanbury Brown–Twiss: intensity fluctuations at two apertures are correlated by |γ|², the squared degree of coherence, which encodes angular structure. Only nanosecond timing is needed, not optical phase stability, so baselines of kilometers between free-flyers are feasible.",
    "application": "Angular characterization of GEO objects from their solar glint; stellar astrometry. Earth-surface imaging is not viable because the source is not hot and bright enough.",
    "failure": "SNR scales with the square of the source brightness temperature and needs large photon rates; ground demos on stars took hours.",
    "first": "Photon rate from a glinting GEO satellite at a 1 m aperture and the integration time to reach |γ|² SNR of 5.",
-   "prior": "Ground demos on bright stars; space, none.",
+   "prior": "Intensity-correlation imaging of sunlit GEO satellites has been studied since an AFRL-funded Texas A&M telescope reached first light on a star in 2008, with a pessimistic SNR analysis by Fried, Riker and Agrawal (JOSA A 2014) and design studies by Hyland (Appl. Opt. 2024); a free-flying space intensity interferometer for stars was analysed by Klein, Guelman and Lipson (2006). No satellite has been imaged this way. Checked 2026-10-17.",
    "trl": 3,
    "trlNote": "Ground stellar intensity interferometry proves the physics.",
    "verify": false,
@@ -1953,12 +1954,12 @@
     "s2s"
    ],
    "rec": "quant",
-   "novelty": "high",
+   "novelty": "medium",
    "physics": "Gottesman–Jennewein–Croke (2012): a shared entangled photon pair lets two apertures interfere incoming light without physically transporting it between them, using a teleportation-style measurement. Removes the beam-transport loss that makes optical VLBI impossible.",
    "application": "Centimeter-scale resolution from GEO or beyond; the end-state for passive optical resolution limits.",
    "failure": "Entangled-pair rates must match the incoming photon rate per mode; quantum memories and repeaters at telescope scale do not exist; decades out.",
    "first": "Required entangled-pair rate for a given target photon flux and baseline.",
-   "prior": "Theory and early lab work only.",
+   "prior": "The scheme is Gottesman, Jennewein and Croke (PRL 2012); tabletop and 20 km fibre demonstrations on simulated thermal sources followed (Brown et al. 2023; Wang et al., USTC 2025), and a 2018 IAC conference paper (La Mura et al.) proposed entanglement-sharing space telescope arrays. No funded space study, mission or on-sky starlight demonstration found; the orbital application is an extrapolation of published work. Checked 2026-10-17.",
    "trl": 2,
    "trlNote": "Theory and tabletop experiments.",
    "verify": false,
@@ -2029,12 +2030,12 @@
     "nadir"
    ],
    "rec": "coh",
-   "novelty": "high",
+   "novelty": "low",
    "physics": "Spontaneous Brillouin backscatter in water is shifted by ~7–8 GHz, proportional to sound speed, which is dominated by temperature. A narrow-linewidth green lidar with an edge-filter or heterodyne receiver returns a temperature profile through the top tens of meters.",
    "application": "Mixed-layer temperature structure, which satellites currently see only at the skin; ocean heat content and hurricane fuel.",
    "failure": "Brillouin cross-section is small and the water column attenuates; from orbit the photon budget is marginal at best. Likely lives on aircraft.",
    "first": "Photons per shot per 5 m depth bin from 500 km with a 1 m aperture and 1 J pulses.",
-   "prior": "Lab and shipboard demos; no airborne-to-space progression recalled.",
+   "prior": "Laboratory profiling to 0.07 °C and 1 m was demonstrated by Rudolf and Walther (Opt. Eng. 2014). The US Navy funded an airborne Brillouin ocean-temperature lidar (BOLTS, SBIR N211-089, 2021–2025), NASA Langley published an airborne receiver concept (2024) and NASA Goddard ran observing-system simulations for ocean heat content (Remote Sensing 2024). No spaceborne instrument or satellite photon-budget study found; the airborne step this entry expected is already funded. Checked 2026-10-17.",
    "trl": 4,
    "trlNote": "Lab and shipboard demos.",
    "verify": false,
@@ -2054,12 +2055,12 @@
     "occ"
    ],
    "rec": "incoh",
-   "novelty": "high",
+   "novelty": "medium",
    "physics": "Earth's umbra extends ~1.4 million km anti-sunward. A spectrometer inside it sees the Sun fully eclipsed with a refracted ring of limb-transmitted light: a continuous all-longitude transmission spectrum through roughly 100× the airmass of a nadir sounder.",
    "application": "Trace-gas limb profiles integrated around the whole terminator; Earth as an exoplanet analog for transit-spectroscopy validation.",
    "failure": "Station-keeping deep in the umbra; the ring is faint and refraction-limited below ~10 km tangent height; limited to terminator geometry by construction.",
    "first": "Ring radiance vs tangent height and the spectral resolution achievable with a 20 cm telescope.",
-   "prior": "Lunar-eclipse spectroscopy of Earth done from the ground; the umbra-station version is concept only, as far as I know.",
+   "prior": "Mayorga et al. (PSJ 2021) proposed a small satellite beyond the Earth–Sun L2 point to observe Earth transiting the Sun in transmission at 0.2–2.5 µm; that vantage lies past the umbra tip, so it is a transit rather than this umbral refracted-ring geometry. Earth's limb transmission spectrum has otherwise been measured through lunar eclipses from the ground (Pallé et al. 2009) and from HST (Youngblood et al. 2020), and Kaguya imaged the refracted ring from lunar orbit in 2009. No spectrometer stationed inside the umbra has been proposed. Checked 2026-10-17.",
    "trl": 2,
    "trlNote": "",
    "verify": false,
@@ -2079,12 +2080,12 @@
     "bistatic"
    ],
    "rec": "coh",
-   "novelty": "high",
+   "novelty": "medium",
    "physics": "Extensive air showers emit nanosecond broadband radio pulses (30–1000 MHz) via geomagnetic and Askaryan mechanisms. The ANITA balloon detected these reflected off the Antarctic ice sheet; the reflection's polarity and amplitude encode surface reflectivity and near-surface density.",
    "application": "Passive VHF/UHF ground-penetrating radar of ice sheets with nature's transmitter; potentially firn density and surface roughness.",
    "failure": "Event rate above threshold is low; the source position must be reconstructed per event; SNR at orbital altitude vs balloon altitude.",
    "first": "Rate of showers above 10¹⁸ eV per day within the footprint, and received field strength at 500 km.",
-   "prior": "Incidental ANITA observations only; not used systematically.",
+   "prior": "ANITA detected ice-reflected cosmic-ray radio pulses (Hoover et al., PRL 2010); Antarctic surface reflectivity was measured from the same payload with the Sun and a balloon pulser rather than cosmic rays (Besson et al. 2013, 2017); a JPL satellite concept (SWORD, 2013) studied orbital detection of the reflected pulses for cosmic-ray science; Shoemaker et al. (Ann. Glaciol. 2020) read anomalous ANITA events as subsurface firn reflections. No work uses the showers as a systematic illuminator for ice-sheet sensing. Checked 2026-10-17.",
    "trl": 3,
    "trlNote": "ANITA incidental detections serve as proof of concept.",
    "verify": false,
@@ -2103,12 +2104,12 @@
     "s2s"
    ],
    "rec": "coh",
-   "novelty": "high",
+   "novelty": "medium",
    "physics": "A beam carrying OAM ℓ reflected from a surface rotating at Ω acquires a frequency shift ℓΩ/π, independent of translational Doppler. Measures spin state directly.",
    "application": "Tumble rate of debris; reaction-wheel and rotor signatures of satellites; non-cooperative attitude determination.",
    "failure": "OAM beams need to overfill the target and preserve mode structure; divergence rules out ground targets from orbit; viable only at satellite-to-satellite ranges.",
    "first": "Mode purity after propagation to 100 km and the required target size for a given ℓ.",
-   "prior": "Laboratory demonstrations; no flight.",
+   "prior": "Demonstrated in the laboratory by Lavery et al. (Science 2013) and extended to rough surfaces and about 1 km free-space range by Chinese groups (Opt. Express 2022 and later), with several papers treating non-cooperative rotating targets, tilt, offset and precession. No proposal or demonstration of satellite-to-satellite spin measurement of orbital objects found. Checked 2026-10-17.",
    "trl": 3,
    "trlNote": "Laboratory demonstrations.",
    "verify": false,
@@ -2127,14 +2128,14 @@
     "g2s"
    ],
    "rec": "incoh",
-   "novelty": "high",
+   "novelty": "medium",
    "physics": "A ground site excites a sodium-layer beacon at 90 km; a LEO imager views it from above. The result is a point source of known altitude, brightness and position, with the entire troposphere removed from the path.",
    "application": "MTF, geolocation and radiometric cross-calibration of commercial imagers; a second beacon gives a known baseline for stereo and pointing calibration.",
-   "failure": "Beacon brightness from above (fluorescence is roughly isotropic) may be marginal for small apertures; scheduling against existing LGS sites; daylight operation impossible.",
+   "failure": "Beacon brightness from above is marginal for a 30 cm aperture at a 1 ms line time (SNR about 4) and comfortable from 50 cm up; radiometry needs a stare of order a second. The return is a single 589 nm line, so radiometric cross-calibration covers one band only. Scheduling against existing LGS sites; daylight operation impossible.",
    "first": "Beacon irradiance at 500 km for a 20 W laser and the resulting SNR for a 30 cm imager at 1 ms exposure.",
-   "prior": "No use recalled; physics is entirely off-the-shelf. Highest maturity-to-novelty ratio on this list.",
-   "trl": 2,
-   "trlNote": "Every component is TRL 9; the application is unvalidated.",
+   "prior": "Psiaki, Flewelling and Hackett (NAVIGATION 2019) proposed that an orbiting camera observe a network of ground-pumped sodium guide stars as known-position references for autonomous orbit determination, the closest published use of a mesospheric beacon viewed from above. Ground lasers aimed directly at satellites have been used or patented for radiometric and polarisation calibration (NASA GSLC, 2014–2015) and geolocation alignment (GOES-R GLM beacons, 2015); Ball Aerospace patented a spacecraft-generated sodium guide star for telescope phasing (2001). No use of a ground LGS for MTF or radiometric calibration of a LEO imager found. Physics entirely off-the-shelf. Checked 2026-10-17.",
+   "trl": 3,
+   "trlNote": "First calculation run 2026-10-17 (scripts/calc/c17_laser_guide_star.py). A 20 W CW sodium laser returns about 10⁷ photons s⁻¹ m⁻² to a ground telescope, matching published returns, and 5×10⁵ photons s⁻¹ m⁻² at 410 km slant range. A 30 cm imager detects about 17 photons per 1 ms line, SNR 4, against negligible background through a 1 nm filter; 50 cm gives SNR 7 and 1 m gives 14. Centroiding and MTF work at the line rate with TDI; 1 % radiometry needs about 0.6 s of staring. TRL 3 on the analytic link budget; every component remains TRL 9.",
    "verify": false,
    "dubious": false
   },
@@ -2180,10 +2181,10 @@
    "application": "Wind stress, thin-film sea-ice state, snow wetness, soil moisture at finer scales; passive imaging with no transmitter.",
    "failure": "Beam-steered downlinks illuminate only user cells; waveform knowledge is proprietary, so a reference channel is required; ITU and provider consent.",
    "first": "Fraction of ocean surface illuminated at any instant by a real constellation's beam plan.",
-   "prior": "Ground and airborne demos exist in the literature, I believe; no orbital receiver.",
+   "prior": "Ground demonstrations exist: Starlink-illuminated passive SAR images from a fixed receiver (Gomez-del-Hoyo and Samczynski, IEEE JSTARS 2024) and Starlink/OneWeb signal characterisation for passive radar (Fraunhofer FHR, 2023–2024). Ku-band bistatic sea-state retrieval was shown earlier with GEO DirecTV signals (Shah et al., IEEE TGRS 2016). No geophysical retrieval from megaconstellation reflections, no airborne demonstration and no orbital receiver were found. Checked 2026-10-17.",
    "trl": 4,
-   "trlNote": "Ground and airborne demos reported; verify.",
-   "verify": true,
+   "trlNote": "Ground passive-radar imaging with Starlink signals (2024) and Ku-band bistatic sea state from GEO signals (2016) validate the components; TRL 4. The earlier airborne-demo claim did not survive a search.",
+   "verify": false,
    "dubious": false
   },
   {
@@ -2279,9 +2280,9 @@
    "application": "Claimed: low-observable target detection.",
    "failure": "The advantage evaporates over kilometers of propagation loss and at microwave frequencies where thermal photons dominate; no path to orbital ranges.",
    "first": "None recommended; treat as killed unless a new mechanism appears.",
-   "prior": "Lab demos at meter scale; heavy marketing.",
+   "prior": "Laboratory demonstrations only: about 1 dB advantage at metre scale with cryogenic receivers (superconducting-circuit experiment, arXiv 2022). Independent analyses converge on a power-limited range ceiling: Shapiro's own review (arXiv 2019), Jonsson and Ankel (IEEE RadarConf 2021), and Pavan and Galati (Remote Sensing 2024), who put the intrinsic range for aircraft-class targets below 1 km and typically tens of metres. Checked 2026-10-17.",
    "trl": 2,
-   "trlNote": "Lab demos at meter scale. Physics-dubious at orbital ranges.",
+   "trlNote": "Lab demos at metre scale. Physics-dubious at orbital ranges: the sub-photon-per-mode power ceiling caps range at well under 1 km in every published analysis, including the protocol originator's.",
    "verify": false,
    "dubious": true
   },
@@ -2303,9 +2304,9 @@
    "application": "Claimed: SAR-class all-weather-independent resolution at optical wavelengths.",
    "failure": "Orbital motion compensation to 130 nm over the synthetic-aperture time is far beyond current navigation; atmospheric phase screens decorrelate in milliseconds. Airborne SAL worked over short paths.",
    "first": "Required motion-compensation accuracy vs available ephemeris and a reference-return scheme; if it cannot close by 10×, stop.",
-   "prior": "Airborne SAL demonstrated (2011); orbital, none.",
+   "prior": "Airborne SAL (Krause et al., CLEO 2011) remains the only flight demonstration; orbital SAL and ISAL exist only in simulation (Shen et al., Aerospace 2025). Published analyses limit the synthetic aperture to the atmospheric coherence length (JOSA A 2017; Sensors 2008). The most optimistic long-range study (Gao and Dong, Sensors 2024, about 3000 km with coherence compensation) concerns ISAL of space objects with no atmospheric path. Checked 2026-10-17.",
    "trl": 3,
-   "trlNote": "Airborne SAL (2011) validates optical aperture synthesis; orbital motion compensation unaddressed. Physics-dubious.",
+   "trlNote": "Airborne SAL (2011) validates optical aperture synthesis; orbital motion compensation unaddressed and the atmosphere caps the aperture at its coherence length. Physics-dubious for Earth-looking SAL from LEO.",
    "verify": false,
    "dubious": true
   }
@@ -2466,6 +2467,18 @@
   "field|pen": {
    "kind": "concept",
    "text": "Magnetotelluric induction (C12) is the penetrating case."
+  },
+  "earth|refl": {
+   "kind": "open",
+   "text": "Downwelling atmospheric emission reflected by the surface is the (1−ε) term in every land-surface-temperature and microwave sea-surface retrieval: a correction that is modeled and removed, not an observable anyone retrieves. Whether the reflected component carries independent information (surface reflectance in the thermal IR, cloud-base emission mirrored by water) is unexplored from orbit."
+  },
+  "transient|refl": {
+   "kind": "open",
+   "text": "Lightning and bolide light reaches orbit by multiple scattering through cloud (T33, T34), which the grid files under emission and absorption, not reflection. Specular reflection of a transient's light from water, ice or the sea surface would give an independent geometry on the source; no technique recalled uses it."
+  },
+  "transient|inel": {
+   "kind": "filled",
+   "text": "Filled via T35: sprites, elves and halos are nitrogen emission excited by the lightning electromagnetic pulse and quasi-static field, a secondary emission pumped by the transient, counted here as inelastic by the same logic that files sounders under both emission and absorption. TGFs themselves are bremsstrahlung and stay under emission."
   }
  },
  "filters": [
