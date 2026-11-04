@@ -1,6 +1,7 @@
 {
  "meta": {
-  "title": "Phenomenology of remote sensing from space",
+  "title": "Space Remote Sensing: Phenomena, Techniques and Readiness",
+  "short": "Space Remote Sensing",
   "subtitle": "A source × interaction grid of every established technique, the empty cells, and the concepts that could fill them, with technology readiness per entry",
   "date": "2026-09-13",
   "caveat": "TRL values are my estimates against NASA definitions, judged for use from space in the stated application, from knowledge through mid-2026 and checked against mission status and the literature on 2026-10-17 and 2026-11-04. They remain hypotheses, and the TRL of a technique is not the TRL of any specific instrument. Every entry now lists the evidence behind its number and the sources for it; markers like {R001} link to the references, which admit only peer-reviewed papers, agency and mission documents, patents and academic books. Items marked verify sit where a scheduled data release or launch will move the number. Novelty claims were the weakest field: of thirteen rated high, one survived a search, and each concept's prior-art field now names what was found.",

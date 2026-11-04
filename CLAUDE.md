@@ -1,10 +1,12 @@
-# Remote-sensing phenomenology grid
+# Space Remote Sensing: Phenomena, Techniques and Readiness
+
+Short name "Space Remote Sensing", used for file names. The repo, the checkout folder and the `/phenomenology/` web path keep the old name so links stay stable.
 
 A static reference site and a mirrored Excel workbook, both generated from one data file.
 
 ## Layout
 - `data.json` — the single source of truth: sources, interactions, geometries, receivers, 80 techniques, 24 concepts, cell annotations, TRL scale, physical filters, and the `references` list every claim points to. Edit this, nothing downstream.
-- `build.py` — reads `data.json`, writes `public/index.html` and `public/remote-sensing-phenomenology.xlsx`. No arguments. `PHEN_DATA=<file> PHEN_OUT=<dir>` build a test copy somewhere else without touching the live `public/`.
+- `build.py` — reads `data.json`, writes `public/index.html` and `public/space-remote-sensing.xlsx`. No arguments. `PHEN_DATA=<file> PHEN_OUT=<dir>` build a test copy somewhere else without touching the live `public/`.
 - `public/` — what the gateway serves. Regenerated output; committed so the GitHub copy is complete on its own.
 - `scripts/recalc.py` — recalculates workbook formulas with LibreOffice and reports errors; run after every build if `soffice` is installed. Needs `scripts/office/`.
 - `scripts/apply_trl.py`, `scripts/add_interactions.py` — one-off migrations already applied. Provenance only.
@@ -14,7 +16,7 @@ A static reference site and a mirrored Excel workbook, both generated from one d
 ## Workflow
 ```
 python3 build.py
-python3 scripts/recalc.py public/remote-sensing-phenomenology.xlsx   # expect "status": "success", total_errors 0
+python3 scripts/recalc.py public/space-remote-sensing.xlsx   # expect "status": "success", total_errors 0
 git add -A && git commit && git push                                  # backup only; the site is live as soon as build.py finishes
 ```
 Dependencies: Python 3.10+, `openpyxl`. LibreOffice only for recalc. A local `.venv/` (gitignored) holds openpyxl: `python3 -m venv .venv && .venv/bin/pip install openpyxl`, then build with `.venv/bin/python build.py`.

@@ -1,4 +1,6 @@
-# Phenomenology of remote sensing from space
+# Space Remote Sensing: Phenomena, Techniques and Readiness
+
+Short name: Space Remote Sensing. The workbook is `public/space-remote-sensing.xlsx`.
 
 Static site plus the workbook that mirrors it. Both are generated from `data.json` by `build.py`.
 

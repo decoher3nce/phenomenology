@@ -29,7 +29,7 @@ HTML = r"""<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Phenomenology of remote sensing from space</title>
+<title>Space Remote Sensing: Phenomena, Techniques and Readiness</title>
 <script>try{var t=localStorage.getItem('phen-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -374,19 +374,19 @@ footer{margin-top:4rem;border-top:1px solid var(--rule);padding-top:1.2rem;font-
 </head>
 <body>
 <div class="topbar"><div class="in">
-  <a class="brand" href="#top"><i class="mark" aria-hidden="true"></i><span class="txt">Phenomenology</span></a>
+  <a class="brand" href="#top"><i class="mark" aria-hidden="true"></i><span class="txt">Space Remote Sensing</span></a>
   <nav class="nav" aria-label="Sections">
     <a href="#grid-section">Grid</a><a href="#catalog-section">Catalog</a><a href="#concept-section">Concepts</a><a href="#interaction-section">Interactions</a><a href="#trl-section">TRL</a><a href="#evidence-section">Evidence</a><a href="#references-section">References</a><a href="#method-section">Method</a>
   </nav>
   <div class="actions">
-    <a class="btn" href="remote-sensing-phenomenology.xlsx" download="remote-sensing-phenomenology.xlsx" aria-label="Download the workbook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16"/></svg><span class="lbl">Workbook</span></a>
+    <a class="btn" href="space-remote-sensing.xlsx" download="space-remote-sensing.xlsx" aria-label="Download the workbook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16"/></svg><span class="lbl">Workbook</span></a>
     <button class="btn" id="theme" type="button" aria-label="Color theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 0 0 16z" fill="currentColor"/></svg><span class="lbl" id="theme-label">Auto</span></button>
   </div>
 </div></div>
 <div class="wrap" id="top">
 <header class="hero">
   <p class="eyebrow"><span>Reference</span><span class="pill" id="updated"></span></p>
-  <h1>Phenomenology of remote sensing from space</h1>
+  <h1>Space Remote Sensing: Phenomena, Techniques and Readiness</h1>
   <p class="lede">Every established technique placed on a grid of <em>source</em> × <em>physical interaction</em>, tagged by viewing geometry, receiver type and technology readiness level. Each marker carries its TRL. Hatched cells are ruled out by physics; dashed cells are open; circles are concepts that could fill them.</p>
   <div class="callout" role="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2 20h20L12 3z"/><path d="M12 10v4m0 3h.01"/></svg><p id="caveat"></p></div>
 </header>
@@ -1037,5 +1037,5 @@ ws.auto_filter.ref = ws.dimensions
 ws = wb.create_sheet('Filters')
 sheet(ws, ['Filter', 'What it decides'], [[f['name'], f['text']] for f in D['filters']], [26, 110])
 
-wb.save(OUT / 'remote-sensing-phenomenology.xlsx')
+wb.save(OUT / 'space-remote-sensing.xlsx')
 print('built', len(D['techniques']), 'techniques,', len(D['concepts']), 'concepts,', len(D['references']), 'references ->', OUT)
