@@ -159,9 +159,9 @@ button.chip.plain::before{display:none}
 
 /* grid */
 .gridwrap{overflow-x:auto;padding:.5rem .6rem .7rem}
-table.grid{border-collapse:separate;border-spacing:4px;font-size:.84rem;min-width:980px;width:100%}
+table.grid{border-collapse:separate;border-spacing:4px;font-size:.84rem;min-width:1060px;width:100%}
 table.grid th{font-weight:600;text-align:left;padding:.4rem .35rem;vertical-align:bottom}
-table.grid thead th{font-size:.8rem;line-height:1.15;max-width:84px;color:var(--ink-2)}
+table.grid thead th{font-size:.76rem;line-height:1.15;max-width:92px;color:var(--ink-2);hyphens:auto;overflow-wrap:anywhere}
 table.grid th.colhead{cursor:pointer;border-radius:var(--r-sm)}
 table.grid th.colhead span{border-bottom:1.5px dotted var(--rule-strong)}
 table.grid th.colhead:hover{background:color-mix(in srgb,var(--ink) 6%,transparent);color:var(--ink)}
@@ -243,9 +243,15 @@ table.cat td.trl{white-space:nowrap}
 
 /* interactions */
 .ilist{list-style:none;margin:1rem 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(440px,1fr));gap:1rem}
-.ilist li{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:1.1rem 1.2rem;box-shadow:var(--shadow)}
-.ilist h3{margin:0 0 .15rem}
-.ilist .note{color:var(--muted);font-size:.93rem;margin:0 0 .4rem}
+.ilist li{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:1.1rem 1.2rem;box-shadow:var(--shadow);display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"h" "note" "art" "dl" "mem";align-items:start}
+.ilist h3{margin:0 0 .15rem;grid-area:h}
+.ilist .note{color:var(--muted);font-size:.93rem;margin:0 0 .4rem;grid-area:note}
+.ilist .idl{grid-area:dl}
+.ilist .members{grid-area:mem}
+.ilist .art{grid-area:art;margin:.3rem 0 .4rem;background:var(--panel-2);border:1px solid var(--rule);border-radius:var(--r-sm);padding:.5rem .6rem .3rem;color:var(--ink-2);max-width:400px}
+.ilist .art svg{display:block;width:100%;height:auto;font-family:var(--sans)}
+.ilist .art figcaption{font-size:.72rem;color:var(--muted);text-align:center;padding:.15rem 0 .05rem;line-height:1.3}
+
 .idl{margin:0}
 .idl dt{font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-top:.6rem}
 .idl dd{margin:.1rem 0 0;line-height:1.5;color:var(--ink-2)}
@@ -553,7 +559,7 @@ footer{margin-top:4rem;border-top:1px solid var(--rule);padding-top:1.2rem;font-
   function renderGrid(){
     const tbl = $('#grid');
     let h = '<thead><tr><th class="rowhead"></th>';
-    D.interactions.forEach(i => h += `<th class="colhead" data-int="${i.id}" data-tipname="${esc(i.name)}" data-tipsub="${esc(i.note)} · open the section"><a href="#int-${i.id}" aria-label="${esc(i.name)}: open its section"><span>${esc(i.short)}</span></a></th>`);
+    D.interactions.forEach(i => h += `<th class="colhead" data-int="${i.id}" data-tipname="${esc(i.name)}" data-tipsub="${esc(i.note)} · open the section"><a href="#int-${i.id}" aria-label="${esc(i.name)}: open its section"><span>${esc(i.label)}</span></a></th>`);
     h += '</tr></thead><tbody>';
     D.sources.forEach(s => {
       h += `<tr><th class="rowhead" scope="row">${esc(s.name)}<small>${esc(s.note)}</small></th>`;
@@ -687,7 +693,7 @@ footer{margin-top:4rem;border-top:1px solid var(--rule);padding-top:1.2rem;font-
       h += `<tr id="${t.id}"><td class="name">${esc(t.name)}<br><span class="id">${t.id}</span>${refPills(t.refs)}</td>
         <td class="trl">${trlTag(t)}${t.trlNote?`<span class="trlnote">${cite(t.trlNote)}</span>`:''}${evDetails(t)}</td>
         <td class="axis">${esc(byId(D.sources,t.src).name)}</td>
-        <td class="ints">${t.int.map(i=>`<a class="ichip" href="#int-${i}" title="${esc(byId(D.interactions,i).name)}: open its section">${esc(byId(D.interactions,i).short)}</a>`).join('')}</td>
+        <td class="ints">${t.int.map(i=>`<a class="ichip" href="#int-${i}" title="${esc(byId(D.interactions,i).name)}: open its section">${esc(byId(D.interactions,i).label)}</a>`).join('')}</td>
         <td class="axis">${t.geom.map(g=>esc(byId(D.geometries,g).name)).join('; ')}<br>${esc(byId(D.receivers,t.rec).name)}</td>
         <td class="sum">${cite(t.summary)}</td>
         <td class="ex">${esc(t.examples)}<br>${esc(t.band)}</td></tr>`;
@@ -734,6 +740,38 @@ footer{margin-top:4rem;border-top:1px solid var(--rule);padding-top:1.2rem;font-
 
   $('#scale').innerHTML = D.trlScale.map(r => { const b = band({trl:+r[0]}); return `<tr><td><i class="sw ${b}">${r[0]}</i>TRL ${r[0]}</td><td>${esc(r[1])}</td></tr>`; }).join('');
   $('#inote').textContent = D.interactionNote;
+
+  // one small diagram per interaction. Blue = radiation; orange = the quantity the interaction changes or reads out.
+  const BLUE = 'var(--link)', ORANGE = 'var(--flag)', INK = 'currentColor';
+  const arrow = (x1, y1, x2, y2, c = BLUE, w = 2, dash = '') => {
+    const a = Math.atan2(y2 - y1, x2 - x1), hx = x2 - 7 * Math.cos(a), hy = y2 - 7 * Math.sin(a);
+    return `<line x1="${x1}" y1="${y1}" x2="${hx}" y2="${hy}" stroke="${c}" stroke-width="${w}" stroke-linecap="round"${dash ? ` stroke-dasharray="${dash}"` : ''}/><polygon points="${x2},${y2} ${hx + 3.5 * Math.sin(a)},${hy - 3.5 * Math.cos(a)} ${hx - 3.5 * Math.sin(a)},${hy + 3.5 * Math.cos(a)}" fill="${c}"/>`;
+  };
+  const wave = (x1, y1, x2, y2, lam = 9, amp = 3.2, c = BLUE, w = 1.8) => {
+    const L = Math.hypot(x2 - x1, y2 - y1), a = Math.atan2(y2 - y1, x2 - x1), pts = [];
+    for (let s = 0; s <= L - 7; s += 1.5){ const o = amp * Math.sin(2 * Math.PI * s / lam); pts.push(`${(x1 + s * Math.cos(a) - o * Math.sin(a)).toFixed(1)},${(y1 + s * Math.sin(a) + o * Math.cos(a)).toFixed(1)}`); }
+    const hx = x2 - 7 * Math.cos(a), hy = y2 - 7 * Math.sin(a);
+    return `<polyline points="${pts.join(' ')}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linejoin="round"/><polygon points="${x2},${y2} ${hx + 3.5 * Math.sin(a)},${hy - 3.5 * Math.cos(a)} ${hx - 3.5 * Math.sin(a)},${hy + 3.5 * Math.cos(a)}" fill="${c}"/>`;
+  };
+  const sat = (x, y, label = '') => `<g transform="translate(${x},${y})"><rect x="-5" y="-5" width="10" height="10" rx="1.5" fill="${INK}"/><rect x="-17" y="-2.5" width="9" height="5" fill="none" stroke="${INK}" stroke-width="1.5"/><rect x="8" y="-2.5" width="9" height="5" fill="none" stroke="${INK}" stroke-width="1.5"/>${label ? `<text x="0" y="-9" font-size="8" text-anchor="middle" fill="${INK}">${label}</text>` : ''}</g>`;
+  const sun = (x, y) => `<g transform="translate(${x},${y})"><circle r="7" fill="none" stroke="${INK}" stroke-width="1.6"/>${[0,45,90,135,180,225,270,315].map(d => `<line x1="0" y1="-10" x2="0" y2="-13" stroke="${INK}" stroke-width="1.5" stroke-linecap="round" transform="rotate(${d})"/>`).join('')}</g>`;
+  const ground = (y = 94, h = 26, label = '') => `<rect x="0" y="${y}" width="200" height="${h}" fill="var(--cell)"/><line x1="0" y1="${y}" x2="200" y2="${y}" stroke="${INK}" stroke-width="1.5"/>${label ? `<text x="196" y="${y + 11}" font-size="8" text-anchor="end" fill="${INK}" opacity=".7">${label}</text>` : ''}`;
+  const txt = (x, y, t, c = INK, anchor = 'middle', size = 8.5) => `<text x="${x}" y="${y}" font-size="${size}" text-anchor="${anchor}" fill="${c}" font-weight="600">${t}</text>`;
+  const svg = (inner, cap) => `<figure class="art" aria-hidden="true"><svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">${inner}</svg><figcaption>${cap}</figcaption></figure>`;
+  const ART = {
+    refl: svg(sun(22, 22) + ground(94, 26, 'surface') + arrow(30, 30, 98, 93) + arrow(102, 93, 166, 30) + `<line x1="100" y1="94" x2="100" y2="46" stroke="${INK}" stroke-width="1" stroke-dasharray="3 3"/>` + `<path d="M86 76 A 20 20 0 0 1 100 72" fill="none" stroke="${ORANGE}" stroke-width="1.6"/><path d="M100 72 A 20 20 0 0 1 114 76" fill="none" stroke="${ORANGE}" stroke-width="1.6"/>` + txt(80, 66, 'θ', ORANGE) + txt(120, 66, 'θ', ORANGE) + sat(172, 22), 'Angle in equals angle out; wavelength unchanged'),
+    abs: svg(`<rect x="86" y="38" width="36" height="46" rx="4" fill="${BLUE}" opacity=".14"/>` + [96,108,114,102,92,110].map((x, k) => `<circle cx="${x}" cy="${[48,46,62,70,76,58][k]}" r="2.2" fill="${INK}" opacity=".6"/>`).join('') + txt(104, 32, 'gas', INK) + `<line x1="12" y1="60" x2="86" y2="60" stroke="${BLUE}" stroke-width="4" stroke-linecap="round"/>` + arrow(122, 60, 188, 60, BLUE, 1.6) + `<line x1="30" y1="112" x2="170" y2="112" stroke="${INK}" stroke-width="1" opacity=".5"/>` + `<polyline points="30,92 90,92 96,100 100,108 104,100 110,92 170,92" fill="none" stroke="${INK}" stroke-width="1.4"/>` + `<path d="M90 92 L96 100 L100 108 L104 100 L110 92" fill="none" stroke="${ORANGE}" stroke-width="2"/>` + txt(100, 119, 'λ', INK, 'middle', 7) + txt(26, 95, 'I', INK, 'end'), 'Photons removed at the wavelengths of a transition'),
+    emis: svg(ground(94, 26, 'warm target') + wave(50, 92, 50, 34, 8, 3, BLUE) + wave(100, 92, 100, 34, 8, 3, BLUE) + wave(150, 92, 150, 34, 8, 3, BLUE) + `<path d="M40 100 q 5 -6 10 0 t 10 0" fill="none" stroke="${ORANGE}" stroke-width="1.6"/><path d="M140 100 q 5 -6 10 0 t 10 0" fill="none" stroke="${ORANGE}" stroke-width="1.6"/>` + txt(100, 108, 'T, composition, current', ORANGE) + sat(100, 18), 'The target radiates on its own: no external source needed'),
+    escat: svg(`<circle cx="100" cy="62" r="7" fill="${INK}" opacity=".75"/>` + wave(10, 62, 91, 62, 9, 3.2, BLUE) + wave(106, 56, 172, 22, 9, 3.2, BLUE) + wave(108, 62, 186, 62, 9, 3.2, BLUE) + wave(106, 68, 160, 104, 9, 3.2, BLUE) + wave(94, 55, 36, 22, 9, 3.2, BLUE) + txt(100, 90, 'same λ, new direction', ORANGE) + txt(100, 103, 'strength depends on size ÷ λ', INK, 'middle', 7.5), 'Redirected by particles or rough surfaces, wavelength kept'),
+    inel: svg(`<circle cx="100" cy="64" r="8" fill="none" stroke="${INK}" stroke-width="2"/><circle cx="100" cy="64" r="2.5" fill="${INK}"/>` + wave(10, 64, 90, 64, 7, 3.2, BLUE) + wave(107, 58, 178, 24, 13, 3.6, ORANGE) + txt(50, 54, 'λ', BLUE) + txt(160, 46, 'λ′ ≠ λ', ORANGE) + txt(100, 92, 'fluorescence · Raman · Brillouin', INK, 'middle', 7.5) + txt(100, 104, 'energy exchanged with the target', INK, 'middle', 7.5), 'The target changes the photon energy'),
+    refr: svg(`<circle cx="100" cy="240" r="150" fill="var(--cell)" stroke="${INK}" stroke-width="1.5"/>` + [168,186,204].map((r, k) => `<circle cx="100" cy="240" r="${r}" fill="none" stroke="${BLUE}" stroke-width="1" opacity="${.5 - k * .14}"/>`).join('') + `<line x1="20" y1="34" x2="180" y2="34" stroke="${INK}" stroke-width="1" stroke-dasharray="3 3"/>` + `<path d="M20 34 Q 100 78 180 34" fill="none" stroke="${BLUE}" stroke-width="2"/>` + arrow(160, 44, 180, 34, BLUE, 2) + arrow(100, 56, 100, 42, ORANGE, 1.8) + txt(100, 30, 'bending ∝ density gradient', ORANGE, 'middle', 7.5) + sat(16, 26) + sat(184, 26) + txt(100, 100, 'limb', INK), 'Rays bend along a limb path; the bend reads the profile'),
+    dopp: svg(ground(94, 26) + sat(100, 18, 'transmit · receive') + wave(92, 30, 70, 88, 10, 3.2, BLUE) + wave(118, 88, 108, 30, 6.5, 3.2, ORANGE) + `<rect x="76" y="80" width="40" height="12" rx="3" fill="${INK}" opacity=".75"/>` + arrow(118, 86, 152, 86, ORANGE, 2.2) + txt(170, 89, 'v', ORANGE, 'middle', 9) + txt(48, 60, 'f', BLUE) + txt(140, 60, 'f + Δf', ORANGE), 'Motion along the line of sight shifts the frequency'),
+    pol: svg(ground(94, 26, 'water') + arrow(22, 30, 98, 93) + arrow(102, 93, 178, 30) + `<g transform="translate(52,54)"><circle r="8" fill="none" stroke="${INK}" stroke-width="1.3"/>${[0,45,90,135].map(d => `<line x1="-8" y1="0" x2="8" y2="0" stroke="${INK}" stroke-width="1.3" transform="rotate(${d})"/>`).join('')}</g>` + `<g transform="translate(148,54)"><circle r="8" fill="none" stroke="${INK}" stroke-width="1.3" opacity=".4"/><line x1="-8" y1="0" x2="8" y2="0" stroke="${ORANGE}" stroke-width="2.6" stroke-linecap="round"/></g>` + txt(52, 36, 'unpolarized', INK, 'middle', 7.5) + txt(148, 36, 'polarized', ORANGE, 'middle', 7.5) + txt(100, 110, 'orientation of the field vector', INK, 'middle', 7.5), 'Reflection, scattering or a magnetized medium sets the field orientation'),
+    phase: svg(`<circle cx="100" cy="112" r="3" fill="${INK}"/>` + [14,30,46,62].map((r, k) => `<path d="M${100 - r} 112 A ${r} ${r} 0 0 1 ${100 + r} 112" fill="none" stroke="${BLUE}" stroke-width="1.2" opacity="${.9 - k * .18}"/>`).join('') + `<line x1="100" y1="110" x2="40" y2="34" stroke="${BLUE}" stroke-width="1.6"/><line x1="100" y1="110" x2="160" y2="34" stroke="${BLUE}" stroke-width="1.6"/>` + `<path d="M48 44 A 62 62 0 0 1 60 36" fill="none" stroke="${ORANGE}" stroke-width="2.2"/>` + txt(78, 56, 'Δφ', ORANGE, 'middle', 9) + sat(40, 26) + sat(160, 26) + `<line x1="57" y1="26" x2="88" y2="26" stroke="${INK}" stroke-width="1" stroke-dasharray="2 2"/><line x1="112" y1="26" x2="143" y2="26" stroke="${INK}" stroke-width="1" stroke-dasharray="2 2"/><rect x="90" y="19" width="20" height="14" rx="3" fill="none" stroke="${INK}" stroke-width="1.3"/>` + txt(100, 29.5, '×', INK, 'middle', 10), 'Phase against a reference: interferometry, aperture synthesis'),
+    tof: svg(ground(94, 26) + sat(60, 18, 't₀') + `<rect x="64" y="40" width="5" height="12" rx="1.5" fill="${BLUE}"/>` + arrow(66, 54, 66, 90, BLUE, 1.6, '3 3') + `<rect x="78" y="68" width="5" height="12" rx="1.5" fill="${BLUE}"/>` + arrow(80, 66, 80, 32, BLUE, 1.6, '3 3') + txt(90, 30, 't₁', INK, 'start') + `<line x1="112" y1="60" x2="188" y2="60" stroke="${INK}" stroke-width="1.3"/><rect x="118" y="50" width="4" height="10" fill="${BLUE}"/><rect x="170" y="50" width="4" height="10" fill="${BLUE}"/>` + `<line x1="122" y1="44" x2="170" y2="44" stroke="${ORANGE}" stroke-width="2"/><line x1="122" y1="41" x2="122" y2="47" stroke="${ORANGE}" stroke-width="2"/><line x1="170" y1="41" x2="170" y2="47" stroke="${ORANGE}" stroke-width="2"/>` + txt(146, 36, 'Δt = 2R / c', ORANGE) + txt(150, 72, 'time', INK, 'middle', 7.5), 'A pulse or code timed out and back gives range'),
+    pen: svg(ground(84, 36, '') + `<line x1="0" y1="102" x2="200" y2="102" stroke="${INK}" stroke-width="1" stroke-dasharray="4 3"/>` + txt(8, 96, 'ice · soil · canopy', INK, 'start', 7.5) + txt(8, 114, 'bedrock · layer', INK, 'start', 7.5) + sat(60, 18) + arrow(66, 30, 90, 83, BLUE, 2) + `<line x1="90" y1="84" x2="100" y2="101" stroke="${BLUE}" stroke-width="2" stroke-dasharray="3 2"/>` + arrow(92, 84, 118, 32, BLUE, 1.6) + arrow(100, 101, 140, 32, ORANGE, 2) + txt(150, 60, 'from depth', ORANGE, 'start', 7.5) + txt(126, 44, 'surface', BLUE, 'start', 7.5), 'Returns from below the first surface, read by depth'),
+    fieldc: svg(`<circle cx="100" cy="190" r="110" fill="var(--cell)" stroke="${INK}" stroke-width="1.5"/>` + [0,1,2].map(k => `<path d="M${40 + k * 10} 82 C ${40 + k * 10} ${30 - k * 14}, ${160 - k * 10} ${30 - k * 14}, ${160 - k * 10} 82" fill="none" stroke="${BLUE}" stroke-width="1.2" stroke-dasharray="4 3" opacity="${.9 - k * .25}"/>`).join('') + `<g transform="translate(100,40)"><rect x="-14" y="-8" width="28" height="16" rx="3" fill="none" stroke="${INK}" stroke-width="1.5"/><circle cx="-6" cy="0" r="2.5" fill="${INK}"/><circle cx="6" cy="0" r="2.5" fill="${INK}"/></g>` + arrow(100, 54, 100, 72, ORANGE, 2.2) + txt(100, 24, 'proof mass · atom · clock', INK, 'middle', 7.5) + txt(118, 66, 'g, B, Δt', ORANGE, 'start', 8.5), 'A field read through its pull on a sensor, no photon from the target')
+  };
   $('#ilist').innerHTML = D.interactions.map(i => {
     const nT = D.techniques.filter(x => x.int.includes(i.id)).length;
     const nC = D.concepts.filter(x => x.int.includes(i.id)).length;
@@ -741,7 +779,7 @@ footer{margin-top:4rem;border-top:1px solid var(--rule);padding-top:1.2rem;font-
     const tl = D.techniques.filter(x => x.int.includes(i.id)).sort((a,b)=>b.trl-a.trl);
     const cl = D.concepts.filter(x => x.int.includes(i.id)).sort((a,b)=>b.trl-a.trl);
     const members = tl.map(x => `${trlTag(x)}<a href="#${x.id}">${esc(x.name)}</a> <span class="id">${x.id}</span>`).concat(cl.map(x => `${trlTag(x)}<a href="#${x.id}">${esc(x.name)}</a> <span class="id">${x.id} · concept</span>`)).join('<br>');
-    return `<li id="int-${i.id}"><h3>${esc(i.name)}</h3><p class="note">${esc(i.note)}</p>${interactionBlock(i, false)}<div class="members"><details class="ev" open><summary>${nT} technique${nT===1?'':'s'}, ${nC} concept${nC===1?'':'s'} in this family · driven by ${esc(srcs)}</summary><p class="memberlist">${members || '<span class="muted">Nothing filed here.</span>'}</p></details></div></li>`;
+    return `<li id="int-${i.id}"><h3>${esc(i.name)}</h3>${ART[i.id] || ''}<p class="note">${esc(i.note)}</p>${interactionBlock(i, false)}<div class="members"><details class="ev" open><summary>${nT} technique${nT===1?'':'s'}, ${nC} concept${nC===1?'':'s'} in this family · driven by ${esc(srcs)}</summary><p class="memberlist">${members || '<span class="muted">Nothing filed here.</span>'}</p></details></div></li>`;
   }).join('');
   $('#filterlist').innerHTML = D.filters.map(f => `<li><b>${esc(f.name)}</b>${esc(f.text)}</li>`).join('');
 
@@ -799,7 +837,7 @@ footer{margin-top:4rem;border-top:1px solid var(--rule);padding-top:1.2rem;font-
   [...new Set(D.references.map(r => r.type))].sort().forEach(t => rType.insertAdjacentHTML('beforeend', `<option value="${esc(t)}">${esc(t)}</option>`));
   const host = u => { try { return new URL(u).hostname.replace(/^www\./,''); } catch(e){ return u; } };
   const anchorFor = id => id.startsWith('cell:') ? null : (id === 'TRL scale' ? '#trl-section' : '#' + id);
-  const citedLabel = id => { if (!id.startsWith('cell:')) return id; const [a, b] = id.slice(5).split('|'); return `grid ${byId(D.sources,a).name} × ${byId(D.interactions,b).short}`; };
+  const citedLabel = id => { if (!id.startsWith('cell:')) return id; const [a, b] = id.slice(5).split('|'); return `grid ${byId(D.sources,a).name} × ${byId(D.interactions,b).label}`; };
   function renderRefs(){
     const term = rq.value.trim().toLowerCase(), typ = rType.value;
     const list = D.references.filter(r => (!typ || r.type === typ) && (!term || [r.id, r.authors, r.org, r.title, r.venue, r.year, r.doi, (citedBy[r.id]||[]).join(' ')].join(' ').toLowerCase().includes(term)));
@@ -922,7 +960,7 @@ CON_MAX = 200
 ws = wb.create_sheet('Grid')
 def header_row(title):
     ws.append([title]); ws.cell(row=ws.max_row, column=1).font = hdr_font
-    ws.append([''] + [i['short'] for i in D['interactions']])
+    ws.append([''] + [i['label'] for i in D['interactions']])
     for c in ws[ws.max_row]: c.font = hdr_font; c.fill = hdr_fill; c.alignment = wrap
 
 header_row('Established techniques per cell, counted from Catalog')
@@ -960,7 +998,7 @@ for row in ws.iter_rows(min_row=3):
         if c.font != hdr_font: c.font = body_font
         c.alignment = wrap
 ws.column_dimensions['A'].width = 22
-for i in range(2, len(D['interactions']) + 2): ws.column_dimensions[get_column_letter(i)].width = 9
+for i in range(2, len(D['interactions']) + 2): ws.column_dimensions[get_column_letter(i)].width = 13
 ws.append([])
 ws.append(['Blank TRL cells read as 0 in the MAX formulas; a non-numeric TRL entry will produce a formula error, so keep the TRL column to integers 1–9. Counting ranges cover Catalog rows 2–%d and Concepts rows 2–%d.' % (CAT_MAX, CON_MAX)])
 ws.cell(row=ws.max_row, column=1).font = Font(name=FONT, italic=True, size=9)
