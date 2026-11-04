@@ -122,15 +122,14 @@ p{max-width:72ch}
 .eyebrow .pill{letter-spacing:.02em;text-transform:none;font-weight:600;background:var(--panel);border:1px solid var(--rule);border-radius:999px;padding:.12rem .6rem;color:var(--ink-2)}
 h1{font-family:var(--serif);font-size:clamp(2.1rem,4.6vw,3.4rem);line-height:1.06;font-weight:700;margin:0 0 .9rem;letter-spacing:-.018em;max-width:24ch}
 .lede{font-family:var(--serif);font-size:clamp(1.1rem,1.6vw,1.28rem);line-height:1.5;color:var(--ink-2);max-width:64ch;margin:0 0 1.4rem}
-.callout{display:flex;gap:.8rem;align-items:flex-start;background:var(--flag-bg);border:1px solid color-mix(in srgb,var(--flag) 35%,transparent);border-radius:var(--r);padding:.85rem 1rem;max-width:84ch;font-size:.94rem;color:var(--ink-2);margin:0}
-.callout svg{flex:none;width:20px;height:20px;color:var(--flag);margin-top:.1rem}
-.callout p{margin:0;max-width:none}
 
 h2{font-family:var(--serif);font-size:clamp(1.5rem,2.4vw,1.95rem);font-weight:700;margin:0 0 .4rem;letter-spacing:-.01em;line-height:1.15}
 h3{font-family:var(--serif);font-size:1.12rem;font-weight:600;margin:1.2rem 0 .3rem;line-height:1.25}
 section{margin-top:3.6rem}
 .sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:1rem;flex-wrap:wrap;margin-bottom:.9rem}
 .sec-head p{margin:.2rem 0 0;color:var(--muted)}
+.sec-head>div:has(>.scalenote){flex:1 1 100%}
+.scalenote p+p{margin-top:.6rem}
 .kicker{font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--link);margin:0 0 .35rem}
 .card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow)}
 
@@ -388,7 +387,6 @@ footer{margin-top:4rem;border-top:1px solid var(--rule);padding-top:1.2rem;font-
   <p class="eyebrow"><span>Reference</span><span class="pill" id="updated"></span></p>
   <h1>Space Remote Sensing: Phenomena, Techniques and Readiness</h1>
   <p class="lede">Every established technique placed on a grid of <em>source</em> × <em>physical interaction</em>, tagged by viewing geometry, receiver type and technology readiness level. Each marker carries its TRL. Hatched cells are ruled out by physics; dashed cells are open; circles are concepts that could fill them.</p>
-  <div class="callout" role="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2 20h20L12 3z"/><path d="M12 10v4m0 3h.01"/></svg><p id="caveat"></p></div>
 </header>
 
 <section id="grid-section">
@@ -403,7 +401,7 @@ footer{margin-top:4rem;border-top:1px solid var(--rule);padding-top:1.2rem;font-
       <span class="spacer"></span>
       <button class="chip plain" id="f-clear" aria-pressed="false">Clear selection</button>
     </div>
-    <div class="gridwrap"><table class="grid" id="grid" aria-describedby="caveat"></table></div>
+    <div class="gridwrap"><table class="grid" id="grid"></table></div>
     <div class="drawer" id="drawer" aria-live="polite"></div>
   </div>
   <div class="stats" id="stats"></div>
@@ -443,7 +441,7 @@ footer{margin-top:4rem;border-top:1px solid var(--rule);padding-top:1.2rem;font-
 <section id="trl-section">
   <div class="split">
     <div>
-      <div class="sec-head"><div><p class="kicker">Readiness</p><h2>The TRL scale as applied here</h2><p>NASA definitions<span id="trlref"></span>. The judgment is for the <em>technique used from space in its stated application</em>, which is why ground-operational Raman lidar sits at TRL 3 and a calibration concept built entirely from flown components sits at TRL 2.</p></div></div>
+      <div class="sec-head"><div><p class="kicker">Readiness</p><h2>The TRL scale as applied here</h2><div id="caveat" class="scalenote"></div></div></div>
       <div class="card"><table class="scale" id="scale"></table></div>
     </div>
     <div id="filters-section">
@@ -527,8 +525,7 @@ footer{margin-top:4rem;border-top:1px solid var(--rule);padding-top:1.2rem;font-
   Object.entries(D.cellNotes).forEach(([k, n]) => addCites('cell:' + k, n, ['text']));
   if (D.meta.trlRef) (citedBy[D.meta.trlRef] = citedBy[D.meta.trlRef] || []).push('TRL scale');
 
-  document.getElementById('caveat').innerHTML = cite(D.meta.caveat);
-  $('#trlref').innerHTML = D.meta.trlRef ? ' ' + citeLink(D.meta.trlRef) : '';
+  document.getElementById('caveat').innerHTML = D.meta.caveat.split(/\n\n+/).map(par => `<p>${cite(par)}</p>`).join('');
   document.getElementById('foot').textContent = D.meta.title + '. Compiled ' + D.meta.date + ', TRL revision ' + D.meta.updated + '. Working reference; extend the catalog and re-run the grid rather than trusting any single cell.';
 
   // legend
@@ -912,7 +909,7 @@ readme = [
     [D['meta']['subtitle']],
     ['Compiled ' + D['meta']['date'] + '; TRL revision ' + D['meta']['updated']],
     [''],
-    [D['meta']['caveat']],
+    [xl(D['meta']['caveat'])],
     [''],
     ['Sheets'],
     ['Catalog', 'One row per established technique with TRL (1–9), a note on the basis where it is not obvious, and a Verify flag. Blue cells are the ones to edit. Keep codes exactly as listed on Axes; write several interactions as |code1|code2| with pipes.'],
