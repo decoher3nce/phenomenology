@@ -5,8 +5,23 @@ from openpyxl.utils import get_column_letter
 
 import os, pathlib
 ROOT = pathlib.Path(__file__).resolve().parent
-OUT = ROOT / 'public'; OUT.mkdir(exist_ok=True)
-D = json.load(open(ROOT / 'data.json'))
+OUT = pathlib.Path(os.environ.get('PHEN_OUT', ROOT / 'public')); OUT.mkdir(exist_ok=True)
+D = json.load(open(os.environ.get('PHEN_DATA', ROOT / 'data.json')))
+D.setdefault('references', [])
+for _e in D['techniques'] + D['concepts']:
+    _e.setdefault('refs', []); _e.setdefault('evidence', [])
+for _n in D['cellNotes'].values():
+    _n.setdefault('refs', [])
+import re as _re
+def xl(text):
+    """Citation tokens {R12} become [R12] in the workbook; the References sheet resolves them."""
+    return _re.sub(r'\{(R\d+)\}', r'[\1]', text or '')
+def ev_summary(e):
+    parts = []
+    for v in e.get('evidence', []):
+        what = v.get('name', '') + (' / ' + v['instrument'] if v.get('instrument') else '')
+        parts.append(f"{v.get('kind','')}: {what} ({v.get('level','')}{', ' + v['dates'] if v.get('dates') else ''}) [{' '.join(v.get('refs', []))}]")
+    return '; '.join(parts)
 DATA_JS = json.dumps(D, ensure_ascii=False).replace('</', '<\\/')
 
 HTML = r"""<!DOCTYPE html>
@@ -131,8 +146,8 @@ section{margin-top:3.6rem}
 .sw.round{border-radius:50%}
 .sw.shape{background:var(--ink-2)}
 .filters{display:flex;flex-wrap:wrap;gap:.5rem .8rem;font-size:.9rem;align-items:center;padding:.75rem 1.1rem;border-bottom:1px solid var(--rule);background:var(--panel-2)}
-.filters label,.toolbar label{display:inline-flex;align-items:center;gap:.45rem;color:var(--muted);font-weight:500}
-select,input[type=search]{font-family:var(--sans);font-size:.9rem;background:var(--panel);color:var(--ink);border:1px solid var(--rule-strong);border-radius:var(--r-sm);padding:.34rem .6rem;min-height:34px}
+.filters label,.toolbar label{display:inline-flex;align-items:center;gap:.45rem;color:var(--muted);font-weight:500;max-width:100%;min-width:0}
+select,input[type=search]{max-width:100%;font-family:var(--sans);font-size:.9rem;background:var(--panel);color:var(--ink);border:1px solid var(--rule-strong);border-radius:var(--r-sm);padding:.34rem .6rem;min-height:34px}
 select{padding-right:1.8rem;appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 14px) 52%,calc(100% - 9px) 52%;background-size:5px 5px;background-repeat:no-repeat}
 input[type=search]{min-width:260px;padding-left:2rem;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238A94A3' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:.6rem 50%;background-size:15px}
 button.chip{font-family:var(--sans);font-size:.88rem;font-weight:600;background:var(--panel);color:var(--ink-2);border:1px solid var(--rule-strong);border-radius:999px;padding:.32rem .8rem;cursor:pointer;min-height:34px;display:inline-flex;align-items:center;gap:.4rem}
@@ -192,6 +207,8 @@ td.cell.open::after{content:"";position:absolute;inset:5px;border:1.5px dashed v
 
 /* catalog */
 .toolbar{display:flex;flex-wrap:wrap;gap:.6rem .8rem;align-items:center;padding:.85rem 1.1rem;border-bottom:1px solid var(--rule);background:var(--panel-2);border-radius:var(--r) var(--r) 0 0}
+.toolbar select{max-width:min(100%,240px)}
+@media (max-width:720px){.toolbar select{max-width:min(100%,200px)}}
 .count{font-size:.86rem;color:var(--muted);font-variant-numeric:tabular-nums;margin-left:auto}
 .tblwrap{overflow-x:auto}
 table.cat{border-collapse:collapse;width:100%;font-size:.9rem;min-width:860px}
@@ -250,6 +267,80 @@ table.cat td.trl{white-space:nowrap}
 .prose p{margin:0 0 1rem;max-width:76ch}
 .prose p:last-child{margin-bottom:0}
 
+/* citations, evidence, references */
+.cite{display:inline-block;font-family:var(--sans);font-size:.68rem;font-weight:700;line-height:1.35;padding:0 .32rem;margin:0 .1rem 0 .12rem;border-radius:4px;background:color-mix(in srgb,var(--link) 13%,transparent);color:var(--link);text-decoration:none;vertical-align:.2em;letter-spacing:.02em;white-space:nowrap}
+.cite:hover,.cite:focus-visible{background:var(--link);color:var(--bg);outline:none}
+.srcs{display:flex;flex-wrap:wrap;gap:.25rem .3rem;align-items:center;margin-top:.45rem}
+.srcs .lbl{font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-right:.15rem}
+.srcs .cite{vertical-align:0;font-size:.72rem}
+.evlist{list-style:none;margin:.25rem 0 0;padding:0;display:grid;gap:.4rem}
+.evlist li{font-size:.86rem;line-height:1.45;color:var(--ink-2);padding-left:.95rem;position:relative}
+.evlist li::before{content:"";position:absolute;left:0;top:.55em;width:.42rem;height:.42rem;border-radius:1px;background:var(--rule-strong)}
+.evlist li.mission::before{background:var(--b9);border-radius:1px}
+.evlist li.program::before{background:var(--b78)}
+.evlist li.system::before,.evlist li.subsystem::before,.evlist li.component::before,.evlist li.technology::before{background:var(--b46);border-radius:50%}
+.evlist b{font-weight:600;color:var(--ink)}
+.lvl{display:inline-block;font-size:.72rem;font-weight:600;border:1px solid var(--rule-strong);border-radius:999px;padding:0 .48rem;margin-right:.3rem;color:var(--ink-2);background:var(--panel-2);white-space:nowrap;line-height:1.5}
+.kindlbl{font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-right:.3rem}
+details.ev{margin-top:.45rem}
+details.ev summary{cursor:pointer;font-size:.8rem;font-weight:600;color:var(--link);list-style:none;display:inline-flex;align-items:center;gap:.35rem;user-select:none}
+details.ev summary::-webkit-details-marker{display:none}
+details.ev summary::before{content:"";width:.38rem;height:.38rem;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(-45deg);margin-left:.1rem}
+details.ev[open] summary::before{transform:rotate(45deg)}
+details.ev .evlist{margin-top:.5rem;max-width:420px}
+table.cat tr:target td{background:color-mix(in srgb,var(--focus) 10%,var(--panel));box-shadow:inset 3px 0 0 var(--focus)}
+/* evidence section */
+.tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:.8rem;margin:0 0 1rem}
+.tier{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);padding:.85rem 1rem;box-shadow:var(--shadow);font-size:.9rem;color:var(--ink-2);display:flex;gap:.7rem;align-items:flex-start}
+.tier .sw{margin-top:.2rem}
+.tier b{display:block;color:var(--ink);font-weight:600;margin-bottom:.1rem}
+details.trlgroup{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);box-shadow:var(--shadow);margin-top:.8rem;overflow:hidden}
+details.trlgroup summary{cursor:pointer;list-style:none;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem .9rem;padding:.9rem 1.1rem;user-select:none}
+details.trlgroup summary::-webkit-details-marker{display:none}
+details.trlgroup summary:hover{background:var(--panel-2)}
+details.trlgroup summary .sw{width:26px;height:26px;font-size:13px;border-radius:7px}
+details.trlgroup summary b{font-family:var(--serif);font-size:1.12rem;font-weight:600}
+details.trlgroup summary .defn{color:var(--muted);font-size:.9rem;flex:1 1 260px}
+details.trlgroup summary .count{font-size:.82rem;color:var(--muted);white-space:nowrap}
+details.trlgroup summary::after{content:"";width:.5rem;height:.5rem;border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);transform:rotate(45deg);margin:0 .3rem 0 .2rem;flex:none}
+details.trlgroup[open] summary::after{transform:rotate(-135deg)}
+details.trlgroup[open] summary{border-bottom:1px solid var(--rule)}
+table.ev{min-width:1080px}
+table.ev td{font-size:.86rem}
+table.ev td.entry{font-weight:600;color:var(--ink);min-width:170px;vertical-align:top}
+table.ev td.entry a{color:inherit;text-decoration:none}
+table.ev td.entry a:hover{text-decoration:underline}
+table.ev td.entry .id{display:block}
+table.ev td.what b{font-weight:600;color:var(--ink)}
+table.ev td.what{min-width:200px}
+table.ev td.op,table.ev td.dates{white-space:nowrap;color:var(--muted);font-size:.82rem}
+table.ev td.detail{color:var(--ink-2);max-width:380px}
+table.ev td.src{white-space:nowrap}
+/* references section */
+.reflist{list-style:none;margin:0;padding:0}
+.reflist li{display:grid;grid-template-columns:4.4rem 1fr;gap:.1rem .9rem;padding:.8rem 1.1rem;border-top:1px solid var(--rule);font-size:.92rem;line-height:1.5;scroll-margin-top:84px}
+.reflist li:first-child{border-top:0}
+.reflist li:target{background:color-mix(in srgb,var(--focus) 10%,var(--panel));box-shadow:inset 3px 0 0 var(--focus)}
+.reflist .rid{font-family:var(--sans);font-weight:700;color:var(--link);font-size:.82rem;padding-top:.15rem;letter-spacing:.02em}
+.reflist .ttl{font-weight:600;color:var(--ink)}
+.reflist .ven{color:var(--ink-2)}
+.reflist .links{display:flex;flex-wrap:wrap;gap:.25rem .9rem;font-size:.82rem;color:var(--muted);margin-top:.2rem;align-items:center}
+.reflist .links a{color:var(--link);overflow-wrap:anywhere}
+.reflist .type{font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--rule-strong);border-radius:999px;padding:0 .45rem;color:var(--muted)}
+.reflist .cited a{color:var(--ink-2);text-decoration:none;border-bottom:1px dotted var(--rule-strong);margin-right:.25rem}
+.reflist .cited a:hover{color:var(--link);border-color:var(--link)}
+.refnote{font-size:.9rem;color:var(--muted);margin:.6rem 0 0}
+.ichip{display:inline-block;font-size:.78rem;font-weight:600;border:1px solid var(--rule-strong);border-radius:999px;padding:.02rem .55rem;margin:.1rem .25rem .1rem 0;color:var(--ink-2);text-decoration:none;background:var(--panel-2);white-space:nowrap}
+.ichip:hover{border-color:var(--link);color:var(--link)}
+table.cat td.ints{white-space:normal;min-width:150px}
+.ilist li{scroll-margin-top:84px}
+.ilist li:target{box-shadow:0 0 0 2px var(--focus),var(--shadow-lift)}
+.ilist .members{margin-top:.8rem;padding-top:.6rem;border-top:1px solid var(--rule)}
+.ilist .members summary{font-size:.86rem}
+.ilist .memberlist{font-size:.9rem;line-height:1.75;margin:.4rem 0 0;max-width:none}
+.ilist .memberlist a{color:var(--ink);text-decoration:none}
+.ilist .memberlist a:hover{color:var(--link);text-decoration:underline}
+table.grid th.colhead a{color:inherit;text-decoration:none;display:block}
 footer{margin-top:4rem;border-top:1px solid var(--rule);padding-top:1.2rem;font-size:.86rem;color:var(--muted);max-width:84ch}
 @media (max-width:860px){ .split{grid-template-columns:1fr} .ilist{grid-template-columns:1fr} }
 @media (max-width:720px){
@@ -263,6 +354,8 @@ footer{margin-top:4rem;border-top:1px solid var(--rule);padding-top:1.2rem;font-
   td.cell{height:58px;min-width:62px}
   table.grid th.rowhead{width:116px}
   .sheets{grid-template-columns:1fr}
+  .reflist li{grid-template-columns:1fr}
+  .reflist .rid{padding-top:0}
   input[type=search]{min-width:0;width:100%}
   .count{margin-left:0}
 }
@@ -277,7 +370,7 @@ footer{margin-top:4rem;border-top:1px solid var(--rule);padding-top:1.2rem;font-
 <div class="topbar"><div class="in">
   <a class="brand" href="#top"><i class="mark" aria-hidden="true"></i><span class="txt">Phenomenology</span></a>
   <nav class="nav" aria-label="Sections">
-    <a href="#grid-section">Grid</a><a href="#catalog-section">Catalog</a><a href="#concept-section">Concepts</a><a href="#interaction-section">Interactions</a><a href="#trl-section">TRL</a><a href="#method-section">Method</a>
+    <a href="#grid-section">Grid</a><a href="#catalog-section">Catalog</a><a href="#concept-section">Concepts</a><a href="#interaction-section">Interactions</a><a href="#trl-section">TRL</a><a href="#evidence-section">Evidence</a><a href="#references-section">References</a><a href="#method-section">Method</a>
   </nav>
   <div class="actions">
     <a class="btn" href="remote-sensing-phenomenology.xlsx" download="remote-sensing-phenomenology.xlsx" aria-label="Download the workbook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16"/></svg><span class="lbl">Workbook</span></a>
@@ -293,7 +386,7 @@ footer{margin-top:4rem;border-top:1px solid var(--rule);padding-top:1.2rem;font-
 </header>
 
 <section id="grid-section">
-  <div class="sec-head"><div><p class="kicker">Source × interaction</p><h2>The grid</h2><p>Select a cell for what fills it or why it is empty. Select a column header for the physics of that interaction.</p></div></div>
+  <div class="sec-head"><div><p class="kicker">Source × interaction</p><h2>The grid</h2><p>Select a cell for what fills it or why it is empty. Select a column header to go to that interaction's section, with every technique and concept in the family.</p></div></div>
   <div class="card">
     <div class="panel-head"><div class="legend" aria-label="Legend" id="legend"></div></div>
     <div class="filters" role="group" aria-label="Filters">
@@ -311,12 +404,14 @@ footer{margin-top:4rem;border-top:1px solid var(--rule);padding-top:1.2rem;font-
 </section>
 
 <section id="catalog-section">
-  <div class="sec-head"><div><p class="kicker">Catalog</p><h2>Established techniques</h2><p>One row per technique with its TRL for use from space. Interactions can be several; the grid counts each. Search matches names, summaries and example missions.</p></div></div>
+  <div class="sec-head"><div><p class="kicker">Catalog</p><h2>Established techniques</h2><p>One row per technique with its TRL for use from space and the evidence behind it. Filter by source or interaction to see a whole family; a technique with several interactions appears under each. Search matches names, summaries, example missions and source IDs.</p></div></div>
   <div class="card">
     <div class="toolbar">
       <input type="search" id="q" placeholder="Search techniques" aria-label="Search techniques">
       <label>Source <select id="c-src"><option value="">all</option></select></label>
+      <label>Interaction <select id="c-int"><option value="">all</option></select></label>
       <label>TRL band <select id="c-band"><option value="">all</option></select></label>
+      <label>Sort <select id="c-sort"><option value="id">list order</option><option value="trl-desc">TRL, highest first</option><option value="trl-asc">TRL, lowest first</option><option value="int">interaction</option><option value="src">source</option><option value="name">name</option></select></label>
       <button class="chip" id="c-verify" aria-pressed="false">Only items to verify</button>
       <span class="count" id="c-count"></span>
     </div>
@@ -342,7 +437,7 @@ footer{margin-top:4rem;border-top:1px solid var(--rule);padding-top:1.2rem;font-
 <section id="trl-section">
   <div class="split">
     <div>
-      <div class="sec-head"><div><p class="kicker">Readiness</p><h2>The TRL scale as applied here</h2><p>NASA definitions. The judgment is for the <em>technique used from space in its stated application</em>, which is why ground-operational Raman lidar sits at TRL 3 and a calibration concept built entirely from flown components sits at TRL 2.</p></div></div>
+      <div class="sec-head"><div><p class="kicker">Readiness</p><h2>The TRL scale as applied here</h2><p>NASA definitions<span id="trlref"></span>. The judgment is for the <em>technique used from space in its stated application</em>, which is why ground-operational Raman lidar sits at TRL 3 and a calibration concept built entirely from flown components sits at TRL 2.</p></div></div>
       <div class="card"><table class="scale" id="scale"></table></div>
     </div>
     <div id="filters-section">
@@ -352,12 +447,36 @@ footer{margin-top:4rem;border-top:1px solid var(--rule);padding-top:1.2rem;font-
   </div>
 </section>
 
+<section id="evidence-section">
+  <div class="sec-head"><div><p class="kicker">Readiness evidence</p><h2>What each TRL rests on</h2><p>Every technique and concept lists the evidence behind its number, with the source for each item. The kind of evidence changes with the level: at 9 it is a mission and an instrument in service; at 7 and 8 it is a program and how far it has been qualified or demonstrated; at 6 and below it is the system, subsystem, component or technology that was tested and the level of that test.</p></div></div>
+  <div class="tiers">
+    <div class="tier"><i class="sw b9">9</i><div><b>TRL 9: missions and instruments</b>The measurement is delivered operationally by named instruments on named missions.</div></div>
+    <div class="tier"><i class="sw b78">7</i><div><b>TRL 7–8: programs and qualification</b>What was flown or qualified, where, and what remains before routine operation.</div></div>
+    <div class="tier"><i class="sw b46">5</i><div><b>TRL 6 and below: tested item and test level</b>The system, subsystem, component or technology and whether it was tested in the laboratory, in the field, from an aircraft or balloon, or only in analysis.</div></div>
+  </div>
+  <div id="evidence"></div>
+</section>
+
+<section id="references-section">
+  <div class="sec-head"><div><p class="kicker">Sources</p><h2>References</h2><p>Every numbered marker in the text, and every evidence item, points here. Only peer-reviewed papers, agency and mission documents, patents and academic books are admitted; each record was resolved against Crossref or fetched from the publisher on the date shown. Preprints are admitted only where no journal version exists and are labelled.</p></div></div>
+  <div class="card">
+    <div class="toolbar">
+      <input type="search" id="rq" placeholder="Search references" aria-label="Search references">
+      <label>Type <select id="r-type"><option value="">all</option></select></label>
+      <span class="count" id="r-count"></span>
+    </div>
+    <ol class="reflist" id="reflist"></ol>
+  </div>
+  <p class="refnote" id="refnote"></p>
+</section>
+
 <section id="method-section">
   <div class="sec-head"><div><p class="kicker">Method</p><h2>How to read and extend this</h2></div></div>
   <div class="card prose">
   <p>The grid is a generative device, not a taxonomy. A technique is a choice of source, one or more interactions, a viewing geometry and a receiver class; enumerating the product space and asking why each cell is empty produces the concept list. The receiver axis is where the field is thinnest: almost everything is incoherent intensity or coherent heterodyne, with SMOS and geodetic VLBI the only TRL 9 correlation receivers and Swarm's helium magnetometer the only TRL 9 quantum sensor in routine Earth service.</p>
   <p>The TRL column changes the reading of the concept list. Sorted by TRL, the top is atom-interferometer gradiometry (5), TIR polarimetry (5), and a cluster at 4 (Rydberg, vibrometry, chronometric geodesy, Brillouin, Rayleigh–Brillouin, Ku/Ka reflectometry); these are IRAD-shaped because the step to 6 is an airborne or hosted-payload demonstration, not new physics. The bottom (2) is where the cheapest verdicts live. C04 and C17 were the first to be tried: each moved from 2 to 3 on a photon budget (the scripts are in the repository under scripts/calc), and each now needs a field night rather than a calculation.</p>
   <p>Two things deserved scrutiny before anyone quoted a number, and both were checked against the literature and mission status on 2026-10-17. First, the verify flags: of eleven, eight were settled, mostly upward, as Biomass, PREFIRE and the DQ-1 lidar reached routine operations, and three remain (Biomass tomographic products due 2027, the FY-4M sounder design, and the first ACES clock-comparison paper). Second, the novelty claims: of thirteen rated high, one survived. Most of the rest turned out to be funded programs or published proposals, and one, opportunistic laser occultation, had already been observed once by accident on a 2006 comm link. Every prior-art field now names what the search found and when.</p>
+  <p>On 2026-11-04 the sourcing was made explicit. Each technique and concept now lists the evidence behind its TRL in the form the level calls for (missions and instruments at 9, programs and their qualification at 7 and 8, the item tested and the test level below that), and every claim in the notes carries a marker to a reference that was resolved against Crossref or fetched from the agency on that date. Only peer-reviewed papers, agency and mission documents, patents and academic books were admitted. Where the sources contradicted the text, the text was corrected and the Evidence table says so; where no admissible source could be found for a claim, the claim was softened or removed rather than left standing. The one TRL that moved was lightning A-band altitude, 6 to 5, because the retrieval it describes has never been published from orbit.</p>
   </div>
 </section>
 
@@ -376,7 +495,34 @@ footer{margin-top:4rem;border-top:1px solid var(--rule);padding-top:1.2rem;font-
   const NOV_RANK = {high:0, medium:1, low:2};
   const trlTag = it => `<span class="tag ${band(it)}" title="${esc(bandName(it))}">TRL ${it.trl}</span>${it.verify?'<span class="tag verify">verify</span>':''}`;
 
-  document.getElementById('caveat').textContent = D.meta.caveat;
+  // references: {R12} tokens in text become linked markers; refs arrays become pill rows
+  const REF = Object.fromEntries(D.references.map(r => [r.id, r]));
+  const refWho = r => r.authors || r.org || '';
+  const refShort = r => `${refWho(r).split(';')[0].split(',')[0]}${r.year ? ' ' + r.year : ''}`;
+  const refTip = id => { const r = REF[id]; return r ? `data-tipname="${esc(r.title)}" data-tipsub="${esc(refWho(r))}${r.year?' · '+r.year:''}${r.venue?' · '+esc(r.venue):''}"` : ''; };
+  const citeLink = id => REF[id] ? `<a class="cite" href="#${id}" ${refTip(id)} aria-label="Reference ${id}">${id}</a>` : `<span class="cite" title="missing reference">${esc(id)}</span>`;
+  const cite = s => esc(s).replace(/\{(R\d+)\}/g, (m, id) => citeLink(id));
+  const plain = s => String(s).replace(/\s?\{R\d+\}/g, '');
+  const refPills = (ids, label) => ids && ids.length ? `<div class="srcs">${label === false ? '' : `<span class="lbl">${label || 'Sources'}</span>`}${ids.map(citeLink).join('')}</div>` : '';
+  const LEVEL_KIND = {mission:'Mission', program:'Program', system:'System', subsystem:'Subsystem', component:'Component', technology:'Technology'};
+  const evItem = v => `<li class="${esc(v.kind)}"><span class="kindlbl">${esc(LEVEL_KIND[v.kind] || v.kind)}</span><b>${esc(v.name)}</b>${v.instrument ? ` · ${esc(v.instrument)}` : ''}${v.operator ? ` <span class="muted">(${esc(v.operator)}${v.dates ? ', ' + esc(v.dates) : ''})</span>` : (v.dates ? ` <span class="muted">(${esc(v.dates)})</span>` : '')}<br><span class="lvl">${esc(v.level)}</span>${cite(v.detail || '')} ${(v.refs||[]).map(citeLink).join('')}</li>`;
+  const evList = items => items && items.length ? `<ul class="evlist">${items.map(evItem).join('')}</ul>` : '';
+  const evDetails = it => it.evidence && it.evidence.length ? `<details class="ev"><summary>Evidence: ${it.evidence.length} item${it.evidence.length===1?'':'s'}</summary>${evList(it.evidence)}</details>` : '';
+  // who cites what
+  const citedBy = {};
+  const addCites = (id, obj, fields) => {
+    const set = new Set(obj.refs || []);
+    fields.forEach(f => String(obj[f] || '').replace(/\{(R\d+)\}/g, (m, r) => { set.add(r); return m; }));
+    (obj.evidence || []).forEach(v => (v.refs || []).forEach(r => set.add(r)));
+    set.forEach(r => { (citedBy[r] = citedBy[r] || []).push(id); });
+  };
+  D.techniques.forEach(t => addCites(t.id, t, ['trlNote', 'summary']));
+  D.concepts.forEach(c => addCites(c.id, c, ['trlNote', 'prior', 'physics', 'application', 'failure', 'first']));
+  Object.entries(D.cellNotes).forEach(([k, n]) => addCites('cell:' + k, n, ['text']));
+  if (D.meta.trlRef) (citedBy[D.meta.trlRef] = citedBy[D.meta.trlRef] || []).push('TRL scale');
+
+  document.getElementById('caveat').innerHTML = cite(D.meta.caveat);
+  $('#trlref').innerHTML = D.meta.trlRef ? ' ' + citeLink(D.meta.trlRef) : '';
   document.getElementById('foot').textContent = D.meta.title + '. Compiled ' + D.meta.date + ', TRL revision ' + D.meta.updated + '. Working reference; extend the catalog and re-run the grid rather than trusting any single cell.';
 
   // legend
@@ -407,7 +553,7 @@ footer{margin-top:4rem;border-top:1px solid var(--rule);padding-top:1.2rem;font-
   function renderGrid(){
     const tbl = $('#grid');
     let h = '<thead><tr><th class="rowhead"></th>';
-    D.interactions.forEach(i => h += `<th class="colhead${state.col===i.id?' selected':''}" tabindex="0" role="button" data-int="${i.id}" data-tipname="${esc(i.name)}" data-tipsub="${esc(i.note)}"><span>${esc(i.short)}</span></th>`);
+    D.interactions.forEach(i => h += `<th class="colhead" data-int="${i.id}" data-tipname="${esc(i.name)}" data-tipsub="${esc(i.note)} · open the section"><a href="#int-${i.id}" aria-label="${esc(i.name)}: open its section"><span>${esc(i.short)}</span></a></th>`);
     h += '</tr></thead><tbody>';
     D.sources.forEach(s => {
       h += `<tr><th class="rowhead" scope="row">${esc(s.name)}<small>${esc(s.note)}</small></th>`;
@@ -435,11 +581,6 @@ footer{margin-top:4rem;border-top:1px solid var(--rule);padding-top:1.2rem;font-
       td.addEventListener('click', open);
       td.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
     });
-    tbl.querySelectorAll('th.colhead').forEach(th => {
-      const open = () => { state.col = th.dataset.int; state.sel = null; renderGrid(); renderDrawer(); };
-      th.addEventListener('click', open);
-      th.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
-    });
   }
 
   function interactionBlock(i, withItems){
@@ -460,23 +601,23 @@ footer{margin-top:4rem;border-top:1px solid var(--rule);padding-top:1.2rem;font-
       d.innerHTML = `<h3>${esc(i.name)}</h3><p class="muted" style="margin:.1rem 0 .5rem">${esc(i.note)}</p>` + interactionBlock(i, true);
       return;
     }
-    if (!state.sel){ d.innerHTML = '<span class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4l7 17 2.5-7.5L21 11z"/></svg>Select a cell to see what fills it, or why it is empty. Select a column header to read the physics of that interaction.</span>'; return; }
+    if (!state.sel){ d.innerHTML = '<span class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4l7 17 2.5-7.5L21 11z"/></svg>Select a cell to see what fills it, or why it is empty. Select a column header to open that interaction\'s section.</span>'; return; }
     const [sid, iid] = state.sel.split('|');
     const s = byId(D.sources, sid), i = byId(D.interactions, iid);
     const items = cellItems(sid, iid).filter(itemMatches);
     const note = D.cellNotes[state.sel];
     let h = `<h3>${esc(s.name)} × ${esc(i.name)}</h3>`;
-    if (note) h += `<p class="muted" style="margin:.2rem 0 .6rem"><span class="tag kind">${esc(note.kind === 'ruled' ? 'ruled out' : note.kind === 'open' ? 'open' : note.kind)}</span>${esc(note.text)}</p>`;
+    if (note) h += `<p class="muted" style="margin:.2rem 0 .6rem"><span class="tag kind">${esc(note.kind === 'ruled' ? 'ruled out' : note.kind === 'open' ? 'open' : note.kind)}</span>${cite(note.text)}</p>${refPills(note.refs)}`;
     if (!items.length && !note) h += '<p class="muted">Nothing filed here and no annotation. Either an oversight or an unexplored combination.</p>';
     items.sort((a,b) => (a.kind===b.kind?0:(a.kind==='technique'?-1:1)) || b.trl-a.trl);
     items.forEach(it => {
       const geoms = it.geom.map(g => byId(D.geometries, g).name).join(', ');
       const rec = byId(D.receivers, it.rec).name;
-      const noteLine = it.trlNote ? `<br><span class="muted" style="font-size:.86rem">TRL note: ${esc(it.trlNote)}</span>` : '';
+      const noteLine = it.trlNote ? `<br><span class="muted" style="font-size:.86rem">TRL note: ${cite(it.trlNote)}</span>` : '';
       if (it.kind === 'technique'){
-        h += `<div class="item">${trlTag(it)}<b>${esc(it.name)}</b> <span class="muted">${esc(it.id)}</span><br>${esc(it.summary)}<br><span class="muted" style="font-size:.86rem">${esc(it.examples)} · ${esc(it.band)} · ${esc(geoms)} · ${esc(rec)}</span>${noteLine}</div>`;
+        h += `<div class="item">${trlTag(it)}<b>${esc(it.name)}</b> <span class="muted">${esc(it.id)}</span><br>${cite(it.summary)}<br><span class="muted" style="font-size:.86rem">${esc(it.examples)} · ${esc(it.band)} · ${esc(geoms)} · ${esc(rec)}</span>${noteLine}${evDetails(it)}${refPills(it.refs)}<a href="#${it.id}" style="font-size:.86rem">Open in the catalog</a></div>`;
       } else {
-        h += `<div class="item">${trlTag(it)}<b>${esc(it.name)}</b> <span class="muted">${esc(it.id)} · concept</span><br>${esc(it.physics)}${noteLine}<br><a href="#${it.id}">Open the concept sheet</a></div>`;
+        h += `<div class="item">${trlTag(it)}<b>${esc(it.name)}</b> <span class="muted">${esc(it.id)} · concept</span><br>${cite(it.physics)}${noteLine}${evDetails(it)}${refPills(it.refs)}<a href="#${it.id}" style="font-size:.86rem">Open the concept sheet</a></div>`;
       }
     });
     d.innerHTML = h;
@@ -507,7 +648,8 @@ footer{margin-top:4rem;border-top:1px solid var(--rule);padding-top:1.2rem;font-
       <div class="stat"><b>${open.size}</b><span>open, no candidate yet</span></div>
       <div class="stat"><b>${D.techniques.length}</b><span>techniques catalogued, ${n9} at TRL 9</span></div>
       <div class="stat"><b>${D.concepts.length}</b><span>concepts, median TRL ${med}, ${D.concepts.filter(c=>c.dubious).length} flagged dubious</span></div>
-      <div class="stat"><b>${nVer}</b><span>TRL values flagged to verify</span></div>`;
+      <div class="stat"><b>${nVer}</b><span>TRL values flagged to verify</span></div>
+      <div class="stat"><b>${D.references.length}</b><span>verified sources behind the numbers</span></div>`;
   }
 
   fGeom.addEventListener('change', e => { state.geom = e.target.value; renderGrid(); renderDrawer(); });
@@ -517,33 +659,44 @@ footer{margin-top:4rem;border-top:1px solid var(--rule);padding-top:1.2rem;font-
   $('#f-clear').addEventListener('click', () => { state.sel = null; state.col = null; renderGrid(); renderDrawer(); });
 
   // catalog
-  const cSrc = $('#c-src'), cBand = $('#c-band'), cVer = $('#c-verify'), q = $('#q');
+  const cSrc = $('#c-src'), cBand = $('#c-band'), cVer = $('#c-verify'), q = $('#q'), cInt = $('#c-int'), cSort = $('#c-sort');
   let onlyVerify = false;
   D.sources.forEach(s => cSrc.insertAdjacentHTML('beforeend', `<option value="${s.id}">${esc(s.name)}</option>`));
+  D.interactions.forEach(i => cInt.insertAdjacentHTML('beforeend', `<option value="${i.id}">${esc(i.name)}</option>`));
+  const intOrder = Object.fromEntries(D.interactions.map((i, k) => [i.id, k]));
+  const srcOrder = Object.fromEntries(D.sources.map((s, k) => [s.id, k]));
   D.trlBands.forEach(b => cBand.insertAdjacentHTML('beforeend', `<option value="${b.id}">${esc(b.name)}</option>`));
   function renderCat(){
     const term = q.value.trim().toLowerCase();
-    const rows = D.techniques.filter(t => {
+    let rows = D.techniques.filter(t => {
       if (cSrc.value && t.src !== cSrc.value) return false;
+      if (cInt.value && !t.int.includes(cInt.value)) return false;
       if (cBand.value && band(t) !== cBand.value) return false;
       if (onlyVerify && !t.verify) return false;
-      if (term && !(t.name+' '+t.summary+' '+t.examples+' '+t.band).toLowerCase().includes(term)) return false;
+      if (term && !(t.name+' '+t.summary+' '+t.examples+' '+t.band+' '+t.id+' '+(t.refs||[]).join(' ')+' '+(t.evidence||[]).map(v=>v.name+' '+v.instrument+' '+v.operator).join(' ')).toLowerCase().includes(term)) return false;
       return true;
     });
-    let h = '<thead><tr><th>Technique</th><th>TRL</th><th>Source · interactions</th><th>Geometry · receiver</th><th>Summary</th><th>Examples · band</th></tr></thead><tbody>';
+    const sortKey = cSort.value;
+    if (sortKey === 'trl-desc') rows = rows.slice().sort((a,b) => b.trl - a.trl || a.id.localeCompare(b.id));
+    if (sortKey === 'trl-asc') rows = rows.slice().sort((a,b) => a.trl - b.trl || a.id.localeCompare(b.id));
+    if (sortKey === 'name') rows = rows.slice().sort((a,b) => a.name.localeCompare(b.name));
+    if (sortKey === 'src') rows = rows.slice().sort((a,b) => srcOrder[a.src] - srcOrder[b.src] || b.trl - a.trl);
+    if (sortKey === 'int') rows = rows.slice().sort((a,b) => Math.min(...a.int.map(i=>intOrder[i])) - Math.min(...b.int.map(i=>intOrder[i])) || b.trl - a.trl);
+    let h = '<thead><tr><th>Technique</th><th>TRL · evidence</th><th>Source</th><th>Interactions</th><th>Geometry · receiver</th><th>Summary</th><th>Examples · band</th></tr></thead><tbody>';
     rows.forEach(t => {
-      h += `<tr><td class="name">${esc(t.name)}<br><span class="id">${t.id}</span></td>
-        <td class="trl">${trlTag(t)}${t.trlNote?`<span class="trlnote">${esc(t.trlNote)}</span>`:''}</td>
-        <td class="axis">${esc(byId(D.sources,t.src).name)}<br>${t.int.map(i=>esc(byId(D.interactions,i).short)).join(', ')}</td>
+      h += `<tr id="${t.id}"><td class="name">${esc(t.name)}<br><span class="id">${t.id}</span>${refPills(t.refs)}</td>
+        <td class="trl">${trlTag(t)}${t.trlNote?`<span class="trlnote">${cite(t.trlNote)}</span>`:''}${evDetails(t)}</td>
+        <td class="axis">${esc(byId(D.sources,t.src).name)}</td>
+        <td class="ints">${t.int.map(i=>`<a class="ichip" href="#int-${i}" title="${esc(byId(D.interactions,i).name)}: open its section">${esc(byId(D.interactions,i).short)}</a>`).join('')}</td>
         <td class="axis">${t.geom.map(g=>esc(byId(D.geometries,g).name)).join('; ')}<br>${esc(byId(D.receivers,t.rec).name)}</td>
-        <td class="sum">${esc(t.summary)}</td>
+        <td class="sum">${cite(t.summary)}</td>
         <td class="ex">${esc(t.examples)}<br>${esc(t.band)}</td></tr>`;
     });
     h += '</tbody>';
     $('#cat').innerHTML = h;
     $('#c-count').textContent = rows.length + ' of ' + D.techniques.length;
   }
-  [cSrc, cBand].forEach(el => el.addEventListener('change', renderCat));
+  [cSrc, cBand, cInt, cSort].forEach(el => el.addEventListener('change', renderCat));
   cVer.addEventListener('click', () => { onlyVerify = !onlyVerify; cVer.setAttribute('aria-pressed', onlyVerify); renderCat(); });
   q.addEventListener('input', renderCat);
 
@@ -565,13 +718,14 @@ footer{margin-top:4rem;border-top:1px solid var(--rule);padding-top:1.2rem;font-
         <div class="meta">${trlTag(c)}<span class="novelty">novelty ${esc(c.novelty)}</span><span class="id">${esc(c.id)}</span></div>
         <div class="meta">${esc(srcs)} × ${esc(ints)} · ${esc(geoms)} · ${esc(byId(D.receivers,c.rec).name)}</div>
         <dl>
-          ${c.trlNote?`<dt>TRL basis</dt><dd>${esc(c.trlNote)}</dd>`:''}
-          <dt>Physics</dt><dd>${esc(c.physics)}</dd>
-          <dt>Application</dt><dd>${esc(c.application)}</dd>
-          <dt>What kills it</dt><dd>${esc(c.failure)}</dd>
-          <dt>First calculation</dt><dd>${esc(c.first)}</dd>
-          <dt>Prior art, as recalled</dt><dd>${esc(c.prior)}</dd>
-        </dl></article>`;
+          ${c.trlNote?`<dt>TRL basis</dt><dd>${cite(c.trlNote)}</dd>`:''}
+          ${c.evidence&&c.evidence.length?`<dt>TRL evidence</dt><dd>${evList(c.evidence)}</dd>`:''}
+          <dt>Physics</dt><dd>${cite(c.physics)}</dd>
+          <dt>Application</dt><dd>${cite(c.application)}</dd>
+          <dt>What kills it</dt><dd>${cite(c.failure)}</dd>
+          <dt>First calculation</dt><dd>${cite(c.first)}</dd>
+          <dt>Prior art</dt><dd>${cite(c.prior)}</dd>
+        </dl>${refPills(c.refs)}</article>`;
     });
     $('#sheets').innerHTML = h;
   }
@@ -584,7 +738,10 @@ footer{margin-top:4rem;border-top:1px solid var(--rule);padding-top:1.2rem;font-
     const nT = D.techniques.filter(x => x.int.includes(i.id)).length;
     const nC = D.concepts.filter(x => x.int.includes(i.id)).length;
     const srcs = D.sources.filter(s => D.techniques.some(x => x.src===s.id && x.int.includes(i.id)) || D.concepts.some(x => x.src.includes(s.id) && x.int.includes(i.id))).map(s=>s.name).join(', ');
-    return `<li id="int-${i.id}"><h3>${esc(i.name)}</h3><p class="note">${esc(i.note)}</p>${interactionBlock(i, false)}<p class="cols">${nT} technique${nT===1?'':'s'}, ${nC} concept${nC===1?'':'s'} · driven by: ${esc(srcs)}</p></li>`;
+    const tl = D.techniques.filter(x => x.int.includes(i.id)).sort((a,b)=>b.trl-a.trl);
+    const cl = D.concepts.filter(x => x.int.includes(i.id)).sort((a,b)=>b.trl-a.trl);
+    const members = tl.map(x => `${trlTag(x)}<a href="#${x.id}">${esc(x.name)}</a> <span class="id">${x.id}</span>`).concat(cl.map(x => `${trlTag(x)}<a href="#${x.id}">${esc(x.name)}</a> <span class="id">${x.id} · concept</span>`)).join('<br>');
+    return `<li id="int-${i.id}"><h3>${esc(i.name)}</h3><p class="note">${esc(i.note)}</p>${interactionBlock(i, false)}<div class="members"><details class="ev" open><summary>${nT} technique${nT===1?'':'s'}, ${nC} concept${nC===1?'':'s'} in this family · driven by ${esc(srcs)}</summary><p class="memberlist">${members || '<span class="muted">Nothing filed here.</span>'}</p></details></div></li>`;
   }).join('');
   $('#filterlist').innerHTML = D.filters.map(f => `<li><b>${esc(f.name)}</b>${esc(f.text)}</li>`).join('');
 
@@ -600,11 +757,63 @@ footer{margin-top:4rem;border-top:1px solid var(--rule);padding-top:1.2rem;font-
     if (top + h > innerHeight - 8) top = y - h - 12;
     tip.style.left = Math.max(8, left) + 'px'; tip.style.top = Math.max(8, top) + 'px';
   }
-  grid.addEventListener('mousemove', e => {
+  document.addEventListener('mousemove', e => {
     const el = e.target.closest('[data-tipname]');
     if (el && el.dataset.tipname) showTip(el, e.clientX, e.clientY); else tip.classList.remove('on');
   });
   grid.addEventListener('mouseleave', () => tip.classList.remove('on'));
+  document.addEventListener('focusin', e => { const el = e.target.closest('.cite[data-tipname]'); if (el){ const r = el.getBoundingClientRect(); showTip(el, r.left, r.bottom); } });
+  document.addEventListener('focusout', () => tip.classList.remove('on'));
+
+  // evidence by TRL level
+  function renderEvidence(){
+    const all = D.techniques.map(t => ({...t, kind2:'technique'})).concat(D.concepts.map(c => ({...c, kind2:'concept'})));
+    const defn = Object.fromEntries(D.trlScale.map(r => [+r[0], r[1]]));
+    let h = '';
+    for (let L = 9; L >= 1; L--){
+      const ents = all.filter(e => e.trl === L);
+      if (!ents.length) continue;
+      const nT = ents.filter(e => e.kind2==='technique').length, nC = ents.length - nT;
+      const nEv = ents.reduce((a, e) => a + (e.evidence||[]).length, 0);
+      const b = band({trl:L});
+      const cols = L >= 9 ? ['Entry','Mission','Instrument','Operator','Dates','Status','Detail','Sources']
+                 : L >= 7 ? ['Entry','Program','Instrument','Operator','Dates','Qualification','Detail','Sources']
+                 : ['Entry','Kind · item tested','Instrument','Operator / lab','Dates','Test level','Detail','Sources'];
+      let rows = '';
+      ents.forEach(e => {
+        const ev = e.evidence && e.evidence.length ? e.evidence : [null];
+        ev.forEach((v, i) => {
+          rows += '<tr>';
+          if (i === 0) rows += `<td class="entry" rowspan="${ev.length}"><a href="#${e.id}">${esc(e.name)}</a><span class="id">${e.id} · ${e.kind2}${e.dubious?' · physics-dubious':''}${e.verify?' · verify':''}</span></td>`;
+          if (!v){ rows += '<td colspan="7" class="muted">No evidence recorded yet.</td></tr>'; return; }
+          rows += `<td class="what">${L < 7 ? `<span class="kindlbl">${esc(LEVEL_KIND[v.kind]||v.kind)}</span>` : ''}<b>${esc(v.name)}</b></td><td>${esc(v.instrument||'')}</td><td class="op">${esc(v.operator||'')}</td><td class="dates">${esc(v.dates||'')}</td><td><span class="lvl">${esc(v.level||'')}</span></td><td class="detail">${cite(v.detail||'')}</td><td class="src">${(v.refs||[]).map(citeLink).join('')}</td></tr>`;
+        });
+      });
+      h += `<details class="trlgroup"><summary><i class="sw ${b}">${L}</i><b>TRL ${L}</b><span class="defn">${esc(defn[L]||'')}</span><span class="count">${nT} technique${nT===1?'':'s'}${nC?`, ${nC} concept${nC===1?'':'s'}`:''} · ${nEv} evidence item${nEv===1?'':'s'}</span></summary><div class="tblwrap"><table class="cat ev"><thead><tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div></details>`;
+    }
+    $('#evidence').innerHTML = h;
+  }
+
+  // references list
+  const rq = $('#rq'), rType = $('#r-type');
+  [...new Set(D.references.map(r => r.type))].sort().forEach(t => rType.insertAdjacentHTML('beforeend', `<option value="${esc(t)}">${esc(t)}</option>`));
+  const host = u => { try { return new URL(u).hostname.replace(/^www\./,''); } catch(e){ return u; } };
+  const anchorFor = id => id.startsWith('cell:') ? null : (id === 'TRL scale' ? '#trl-section' : '#' + id);
+  const citedLabel = id => { if (!id.startsWith('cell:')) return id; const [a, b] = id.slice(5).split('|'); return `grid ${byId(D.sources,a).name} × ${byId(D.interactions,b).short}`; };
+  function renderRefs(){
+    const term = rq.value.trim().toLowerCase(), typ = rType.value;
+    const list = D.references.filter(r => (!typ || r.type === typ) && (!term || [r.id, r.authors, r.org, r.title, r.venue, r.year, r.doi, (citedBy[r.id]||[]).join(' ')].join(' ').toLowerCase().includes(term)));
+    $('#reflist').innerHTML = list.map(r => {
+      const cited = (citedBy[r.id] || []);
+      const link = r.doi ? `<a href="https://doi.org/${esc(r.doi)}" target="_blank" rel="noopener">doi:${esc(r.doi)}</a>` : (r.url ? `<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(host(r.url))}</a>` : '');
+      return `<li id="${r.id}"><span class="rid">${r.id}</span><div><div class="ttl">${esc(r.title)}</div><div class="ven">${esc(refWho(r))}${r.year?` (${r.year})`:''}${r.venue?`. ${esc(r.venue)}`:''}${r.note?` <span class="muted">${esc(r.note)}</span>`:''}</div><div class="links"><span class="type">${esc(r.type)}</span>${link}${r.verified?`<span>verified ${esc(r.verified)}${r.accessed?', '+esc(r.accessed):''}</span>`:''}${cited.length?`<span class="cited">cited by ${cited.map(id => anchorFor(id) ? `<a href="${anchorFor(id)}">${esc(citedLabel(id))}</a>` : `<span>${esc(citedLabel(id))}</span>`).join('')}</span>`:''}</div></div></li>`;
+    }).join('');
+    $('#r-count').textContent = list.length + ' of ' + D.references.length;
+  }
+  rq.addEventListener('input', renderRefs); rType.addEventListener('change', renderRefs);
+  const typeCounts = {}; D.references.forEach(r => typeCounts[r.type] = (typeCounts[r.type]||0) + 1);
+  const nCitedEnt = D.techniques.filter(t => (citedBy && Object.values(citedBy).some(l => l.includes(t.id)))).length + D.concepts.filter(c => Object.values(citedBy).some(l => l.includes(c.id))).length;
+  $('#refnote').textContent = D.references.length ? `${D.references.length} references: ${Object.entries(typeCounts).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`${v} ${k}`).join(', ')}. ${nCitedEnt} of ${D.techniques.length + D.concepts.length} techniques and concepts carry at least one source.` : 'No references recorded yet.';
   addEventListener('scroll', () => tip.classList.remove('on'), {passive:true});
 
   // theme toggle: auto -> light -> dark
@@ -629,7 +838,7 @@ footer{margin-top:4rem;border-top:1px solid var(--rule);padding-top:1.2rem;font-
     navLinks.forEach(a => { const t = document.querySelector(a.getAttribute('href')); if (t) io.observe(t); });
   }
 
-  renderGrid(); renderDrawer(); renderStats(); renderCat(); renderSheets();
+  renderGrid(); renderDrawer(); renderStats(); renderCat(); renderSheets(); renderEvidence(); renderRefs();
 })();
 </script>
 </body>
@@ -672,6 +881,8 @@ readme = [
     ['Concepts', 'Novel concept sheets with TRL, physics, application, failure mode, first calculation, prior art and novelty confidence. Dubious = Y marks physics-dubious entries, which the Grid sheet excludes.'],
     ['Grid', 'Source × interaction, computed by formula from Catalog and Concepts: count of techniques, their maximum TRL, and count of concepts. Cell annotations follow.'],
     ['Axes', 'Code lists for source, interaction, geometry and receiver, and the NASA TRL definitions used.'],
+    ['Evidence', 'One row per piece of TRL evidence: the mission and instrument (TRL 9), the program and its qualification level (TRL 7–8), or the item tested and the test level (TRL 6 and below), each with its sources.'],
+    ['References', 'Every source cited anywhere in the workbook, with DOI or URL, how it was verified and on what date, and which entries cite it. Markers like [R12] in any text cell point to the row with that ID.'],
     ['Filters', 'The four physical filters to run before any concept study.'],
     [''],
     ['Example row', 'Catalog row 2 (T01) shows the expected format for a new entry.'],
@@ -693,17 +904,17 @@ rows.append(['note', '', 'Classification conventions', D['interactionNote'], '',
 sheet(ws, ['Axis', 'Code', 'Name', 'Definition', 'Mechanism (interactions)', 'What is measured', 'What it yields', 'Governing limit'], rows, [12, 12, 36, 60, 70, 50, 60, 70])
 
 ws = wb.create_sheet('Catalog')
-rows = [[t['id'], t['name'], t['src'], '|'+'|'.join(t['int'])+'|', '|'+'|'.join(t['geom'])+'|', t['rec'], t['trl'], t['trlNote'], 'Y' if t['verify'] else '', t['band'], t['examples'], t['summary']] for t in D['techniques']]
-sheet(ws, ['ID', 'Technique', 'Source code', 'Interaction codes (|a|b|)', 'Geometry codes (|a|b|)', 'Receiver code', 'TRL (1–9)', 'TRL basis', 'Verify', 'Band', 'Examples', 'Summary'], rows,
-      [6, 34, 11, 20, 20, 11, 8, 44, 7, 22, 34, 70])
+rows = [[t['id'], t['name'], t['src'], '|'+'|'.join(t['int'])+'|', '|'+'|'.join(t['geom'])+'|', t['rec'], t['trl'], xl(t['trlNote']), 'Y' if t['verify'] else '', t['band'], t['examples'], xl(t['summary']), ' '.join(t['refs']), ev_summary(t)] for t in D['techniques']]
+sheet(ws, ['ID', 'Technique', 'Source code', 'Interaction codes (|a|b|)', 'Geometry codes (|a|b|)', 'Receiver code', 'TRL (1–9)', 'TRL basis', 'Verify', 'Band', 'Examples', 'Summary', 'Sources (see References)', 'TRL evidence (see Evidence)'], rows,
+      [6, 34, 11, 20, 20, 11, 8, 44, 7, 22, 34, 70, 18, 60])
 for row in ws.iter_rows(min_row=2, max_col=12):
     for c in row: c.font = blue_font
 CAT_MAX = 400
 
 ws = wb.create_sheet('Concepts')
-rows = [[c['id'], c['name'], '|'+'|'.join(c['src'])+'|', '|'+'|'.join(c['int'])+'|', '|'+'|'.join(c['geom'])+'|', c['rec'], c['trl'], c['trlNote'], 'Y' if c['verify'] else '', 'Y' if c['dubious'] else '', c['novelty'], c['physics'], c['application'], c['failure'], c['first'], c['prior']] for c in D['concepts']]
-sheet(ws, ['ID', 'Concept', 'Source codes (|a|b|)', 'Interaction codes (|a|b|)', 'Geometry codes (|a|b|)', 'Receiver code', 'TRL (1–9)', 'TRL basis', 'Verify', 'Dubious', 'Novelty confidence', 'Physics', 'Application', 'What kills it', 'First calculation', 'Prior art (as recalled)'], rows,
-      [6, 34, 14, 18, 18, 10, 8, 40, 7, 8, 10, 60, 40, 46, 40, 40])
+rows = [[c['id'], c['name'], '|'+'|'.join(c['src'])+'|', '|'+'|'.join(c['int'])+'|', '|'+'|'.join(c['geom'])+'|', c['rec'], c['trl'], xl(c['trlNote']), 'Y' if c['verify'] else '', 'Y' if c['dubious'] else '', c['novelty'], xl(c['physics']), xl(c['application']), xl(c['failure']), xl(c['first']), xl(c['prior']), ' '.join(c['refs']), ev_summary(c)] for c in D['concepts']]
+sheet(ws, ['ID', 'Concept', 'Source codes (|a|b|)', 'Interaction codes (|a|b|)', 'Geometry codes (|a|b|)', 'Receiver code', 'TRL (1–9)', 'TRL basis', 'Verify', 'Dubious', 'Novelty confidence', 'Physics', 'Application', 'What kills it', 'First calculation', 'Prior art', 'Sources (see References)', 'TRL evidence (see Evidence)'], rows,
+      [6, 34, 14, 18, 18, 10, 8, 40, 7, 8, 10, 60, 40, 46, 40, 40, 18, 60])
 for row in ws.iter_rows(min_row=2, max_col=16):
     for c in row: c.font = blue_font
 CON_MAX = 200
@@ -743,7 +954,7 @@ ws.append(['Cell annotations']); ws.cell(row=ws.max_row, column=1).font = hdr_fo
 ws.append(['Source', 'Interaction', 'Kind', 'Note'])
 for c in ws[ws.max_row]: c.font = hdr_font; c.fill = hdr_fill
 for k, v in D['cellNotes'].items():
-    a, b = k.split('|'); ws.append([name[a], name[b], v['kind'], v['text']])
+    a, b = k.split('|'); ws.append([name[a], name[b], v['kind'], xl(v['text']) + (' ' + ' '.join('[%s]' % r for r in v['refs']) if v['refs'] else '')])
 for row in ws.iter_rows(min_row=3):
     for c in row:
         if c.font != hdr_font: c.font = body_font
@@ -754,8 +965,39 @@ ws.append([])
 ws.append(['Blank TRL cells read as 0 in the MAX formulas; a non-numeric TRL entry will produce a formula error, so keep the TRL column to integers 1–9. Counting ranges cover Catalog rows 2–%d and Concepts rows 2–%d.' % (CAT_MAX, CON_MAX)])
 ws.cell(row=ws.max_row, column=1).font = Font(name=FONT, italic=True, size=9)
 
+ws = wb.create_sheet('Evidence')
+rows = []
+for e in D['techniques'] + D['concepts']:
+    kind2 = 'technique' if e['id'].startswith('T') else 'concept'
+    for v in e['evidence']:
+        rows.append([e['id'], e['name'], kind2, e['trl'], v.get('kind', ''), v.get('name', ''), v.get('instrument', ''), v.get('operator', ''), v.get('dates', ''), v.get('level', ''), xl(v.get('detail', '')), ' '.join(v.get('refs', []))])
+sheet(ws, ['Entry ID', 'Entry', 'Entry kind', 'TRL', 'Evidence kind', 'Mission / program / item tested', 'Instrument', 'Operator or lab', 'Dates', 'Status, qualification or test level', 'Detail', 'Sources (see References)'], rows,
+      [8, 34, 10, 6, 12, 36, 26, 26, 14, 30, 70, 18])
+ws.auto_filter.ref = ws.dimensions
+
+ws = wb.create_sheet('References')
+cited_by = {}
+def _cite(eid, obj, fields):
+    s = set(obj.get('refs', []))
+    for f in fields:
+        s.update(_re.findall(r'\{(R\d+)\}', obj.get(f, '') or ''))
+    for v in obj.get('evidence', []): s.update(v.get('refs', []))
+    for r in s: cited_by.setdefault(r, []).append(eid)
+for t in D['techniques']: _cite(t['id'], t, ['trlNote', 'summary'])
+for c in D['concepts']: _cite(c['id'], c, ['trlNote', 'prior', 'physics', 'application', 'failure', 'first'])
+for k, v in D['cellNotes'].items(): _cite('grid ' + name[k.split('|')[0]] + ' × ' + name[k.split('|')[1]], v, ['text'])
+if D['meta'].get('trlRef'): cited_by.setdefault(D['meta']['trlRef'], []).append('TRL scale')
+rows = [[r['id'], r.get('type', ''), r.get('authors', ''), r.get('title', ''), r.get('venue', ''), r.get('year', ''), r.get('doi', ''), ('https://doi.org/' + r['doi']) if r.get('doi') else r.get('url', ''), r.get('org', ''), r.get('verified', ''), r.get('accessed', ''), r.get('note', ''), ', '.join(cited_by.get(r['id'], []))] for r in D['references']]
+sheet(ws, ['ID', 'Type', 'Authors', 'Title', 'Venue', 'Year', 'DOI', 'Link', 'Organisation', 'Verified by', 'Accessed', 'Note', 'Cited by'], rows,
+      [7, 12, 40, 60, 36, 7, 28, 44, 20, 12, 11, 30, 40])
+for row in ws.iter_rows(min_row=2, min_col=8, max_col=8):
+    for c in row:
+        if c.value:
+            c.hyperlink = c.value; c.font = Font(name=FONT, size=10, color='1C5CAB', underline='single')
+ws.auto_filter.ref = ws.dimensions
+
 ws = wb.create_sheet('Filters')
 sheet(ws, ['Filter', 'What it decides'], [[f['name'], f['text']] for f in D['filters']], [26, 110])
 
 wb.save(OUT / 'remote-sensing-phenomenology.xlsx')
-print('built', len(D['techniques']), 'techniques,', len(D['concepts']), 'concepts ->', OUT)
+print('built', len(D['techniques']), 'techniques,', len(D['concepts']), 'concepts,', len(D['references']), 'references ->', OUT)
