@@ -8028,14 +8028,14 @@
    "type": "report",
    "authors": "",
    "org": "NASA",
-   "title": "NASA Systems Engineering Handbook, Rev. 2, Appendix G: Technology Assessment / Technology Readiness Levels",
+   "title": "NASA Systems Engineering Handbook",
    "venue": "NASA/SP-2016-6105 Rev 2",
    "year": 2016,
    "doi": "",
    "url": "https://ntrs.nasa.gov/citations/20170001761",
    "accessed": "2026-11-04",
    "verified": "url-fetched",
-   "note": "TRL definitions used throughout"
+   "note": "Appendix G: Technology Assessment / Technology Readiness Levels. TRL definitions used throughout"
   },
   {
    "id": "R002",
@@ -8073,7 +8073,7 @@
    "type": "mission-page",
    "authors": "",
    "org": "ESA eoPortal",
-   "title": "WorldView-3 - eoPortal",
+   "title": "WorldView-3",
    "venue": "ESA eoPortal satellite-missions directory",
    "year": 2026,
    "doi": "",
@@ -8463,7 +8463,7 @@
    "type": "mission-page",
    "authors": "",
    "org": "ESA",
-   "title": "ESA - FLEX",
+   "title": "FLEX",
    "venue": "ESA Observing the Earth / FutureEO",
    "year": 2026,
    "doi": "",
@@ -9753,7 +9753,7 @@
    "type": "mission-page",
    "authors": "",
    "org": "WMO",
-   "title": "WMO OSCAR | Details for Instrument MWS",
+   "title": "Details for Instrument MWS",
    "venue": "WMO OSCAR/Space database",
    "year": 2024,
    "doi": "",
@@ -9993,14 +9993,14 @@
    "type": "mission-page",
    "authors": "",
    "org": "NASA",
-   "title": "PREFIRE - NASA Science (mission page; Active Mission; launch May 2024; second CubeSat launched 5 June 2024; operating through at least September 2026)",
+   "title": "PREFIRE",
    "venue": "NASA Science mission page",
    "year": 2026,
    "doi": "",
    "url": "https://science.nasa.gov/mission/prefire/",
    "accessed": "2026-11-04",
    "verified": "url-fetched",
-   "note": ""
+   "note": "Active Mission; launch May 2024; second CubeSat launched 5 June 2024; operating through at least September 2026"
   },
   {
    "id": "R133",
@@ -10008,14 +10008,14 @@
    "type": "mission-page",
    "authors": "",
    "org": "NASA JPL",
-   "title": "NASA's PREFIRE CubeSat Mission Extended (15 Aug 2025: extended through September 2026; CubeSats launched May and June 2024 from Rocket Lab LC-1)",
+   "title": "NASA’s PREFIRE CubeSat Mission Extended",
    "venue": "NASA JPL news release",
    "year": 2025,
    "doi": "",
    "url": "https://www.jpl.nasa.gov/news/nasas-prefire-cubesat-mission-extended/",
    "accessed": "2026-11-04",
    "verified": "url-fetched",
-   "note": ""
+   "note": "15 Aug 2025: extended through September 2026; CubeSats launched May and June 2024 from Rocket Lab LC-1"
   },
   {
    "id": "R134",
@@ -10023,14 +10023,14 @@
    "type": "dataset",
    "authors": "",
    "org": "NASA",
-   "title": "PREFIRE data collections at the NASA Atmospheric Science Data Center (Level 1A/1B radiance, 2B-FLX spectral flux, 2B-ATM, 2B-CLD, 2B-SFC, 2B-MSK, Level 3 surface emissivity; SAT1 and SAT2; release R01)",
+   "title": "PREFIRE data collections at the NASA Atmospheric Science Data Center",
    "venue": "NASA Earthdata Common Metadata Repository, project=PREFIRE (data center LARC_CLOUD / ASDC)",
    "year": 2026,
    "doi": "",
    "url": "https://cmr.earthdata.nasa.gov/search/collections.json?project=PREFIRE",
    "accessed": "2026-11-04",
    "verified": "url-fetched",
-   "note": "Queried CMR on 2026-11-04; 34 public PREFIRE collections listed including 1B-RAD, 2B-FLX and 3-SFC-SORTED-ALLSKY."
+   "note": "Level 1A/1B radiance, 2B-FLX spectral flux, 2B-ATM, 2B-CLD, 2B-SFC, 2B-MSK, Level 3 surface emissivity; SAT1 and SAT2; release R01. The link is a NASA CMR search feed, which has no page title. Queried CMR on 2026-11-04; 34 public PREFIRE collections listed including 1B-RAD, 2B-FLX and 3-SFC-SORTED-ALLSKY."
   },
   {
    "id": "R135",
@@ -10068,14 +10068,14 @@
    "type": "mission-page",
    "authors": "",
    "org": "ESA",
-   "title": "ESA signs launch contract for FORUM with Avio (18 Dec 2024; FORUM to lift off on a Vega-C from Europe's Spaceport in late 2027)",
+   "title": "ESA signs launch contract for FORUM with Avio",
    "venue": "ESA web page",
    "year": 2024,
    "doi": "",
    "url": "https://www.esa.int/ESA_Multimedia/Images/2024/12/ESA_signs_launch_contract_for_FORUM_with_Avio",
    "accessed": "2026-11-04",
    "verified": "url-fetched",
-   "note": ""
+   "note": "18 Dec 2024; FORUM to lift off on a Vega-C from Europe's Spaceport in late 2027"
   },
   {
    "id": "R138",
@@ -10128,14 +10128,14 @@
    "type": "report",
    "authors": "",
    "org": "NASA",
-   "title": "Introduction: Historical perspective on the HCMM program (in: The Heat Capacity Mapping Mission (HCMM) Anthology, NASA SP-465)",
+   "title": "Introduction: Historical perspective on the HCMM program",
    "venue": "NASA NTRS, accession 84N14564, document ID 19840006496",
    "year": 1982,
    "doi": "",
    "url": "https://ntrs.nasa.gov/citations/19840006496",
    "accessed": "2026-11-04",
    "verified": "url-fetched",
-   "note": "HCMM (AEM-A, 1978-1980) day/night thermal-inertia mission anthology chapter; NTRS record does not list authors (anthology eds. Short, N. M.; Stuart, L. M.)."
+   "note": "In: The Heat Capacity Mapping Mission (HCMM) Anthology, NASA SP-465. HCMM (AEM-A, 1978-1980) day/night thermal-inertia mission anthology chapter; NTRS record does not list authors (anthology eds. Short, N. M.; Stuart, L. M.)."
   },
   {
    "id": "R142",
@@ -10503,7 +10503,7 @@
    "type": "mission-page",
    "authors": "",
    "org": "ESA eoPortal",
-   "title": "HawkEye 360 - eoPortal",
+   "title": "HawkEye 360",
    "venue": "ESA eoPortal satellite-missions directory",
    "year": 2026,
    "doi": "",
@@ -10518,7 +10518,7 @@
    "type": "mission-page",
    "authors": "",
    "org": "ESA eoPortal",
-   "title": "BRO (Breizh Reconnaissance Orbiter) / Unseenlabs - eoPortal",
+   "title": "BRO (Breizh Reconnaissance Orbiter) / Unseenlabs",
    "venue": "ESA eoPortal satellite-missions directory",
    "year": 2026,
    "doi": "",
@@ -10533,7 +10533,7 @@
    "type": "mission-page",
    "authors": "",
    "org": "ESA eoPortal",
-   "title": "Kleos Commercial RF Monitoring CubeSat Constellation - eoPortal",
+   "title": "Kleos Commercial RF Monitoring CubeSat Constellation",
    "venue": "ESA eoPortal satellite-missions directory",
    "year": 2022,
    "doi": "",
@@ -10968,14 +10968,14 @@
    "type": "mission-page",
    "authors": "",
    "org": "CNES",
-   "title": "TARANIS | CNES (project page: satellite lost on its Vega launch from Kourou on 17 November 2020; mission to study TLEs and TGFs)",
+   "title": "TARANIS",
    "venue": "CNES project page",
    "year": 2020,
    "doi": "",
    "url": "https://cnes.fr/en/projects/taranis",
    "accessed": "2026-11-04",
    "verified": "url-fetched",
-   "note": ""
+   "note": "Satellite lost on its Vega launch from Kourou on 17 November 2020; mission to study TLEs and TGFs"
   },
   {
    "id": "R198",
@@ -11718,14 +11718,14 @@
    "type": "mission-page",
    "authors": "",
    "org": "ESA",
-   "title": "Biomass mission milestones and next steps (ESA news, 05 Dec 2025: final commissioning acquisition 20 Nov 2025; transition to Phase E2 Tomographic Phase 21 Nov 2025 00:29:45 UTC; unrestricted access to Phase E2 L1a/L1b/L1c/L2a from 12 Dec 2025)",
+   "title": "Biomass mission milestones and next steps",
    "venue": "ESA Earth Online news",
    "year": 2025,
    "doi": "",
    "url": "https://earth.esa.int/eogateway/news/biomass-mission-milestones-and-next-steps",
    "accessed": "2026-11-04",
    "verified": "url-fetched",
-   "note": ""
+   "note": "05 Dec 2025: final commissioning acquisition 20 Nov 2025; transition to Phase E2 Tomographic Phase 21 Nov 2025 00:29:45 UTC; unrestricted access to Phase E2 L1a/L1b/L1c/L2a from 12 Dec 2025"
   },
   {
    "id": "R248",
@@ -11733,14 +11733,14 @@
    "type": "mission-page",
    "authors": "",
    "org": "ESA",
-   "title": "Biomass Level-2 product release schedule (ESA news, 26 Mar 2026: L2A Forest Height and Ground Notching 30 June 2026; L2A Forest Disturbance April 2027; L2B Forest Height and Above Ground Biomass for Tomographic-phase acquisitions May 2027; L2B Forest Disturbance December 2027; Tomographic phase to 9 April 2027)",
+   "title": "Biomass Level-2 product release schedule",
    "venue": "ESA Earth Online news",
    "year": 2026,
    "doi": "",
    "url": "https://earth.esa.int/eogateway/news/biomass-level-2-product-release-schedule",
    "accessed": "2026-11-04",
    "verified": "url-fetched",
-   "note": "Page states the Tomographic phase as '21 November 2024 to 9 April 2027'; the 2024 start year is inconsistent with the 05 Dec 2025 milestones item (21 Nov 2025) and is presumably a typo."
+   "note": "26 Mar 2026: L2A Forest Height and Ground Notching 30 June 2026; L2A Forest Disturbance April 2027; L2B Forest Height and Above Ground Biomass for Tomographic-phase acquisitions May 2027; L2B Forest Disturbance December 2027; Tomographic phase to 9 April 2027. Page states the Tomographic phase as '21 November 2024 to 9 April 2027'; the 2024 start year is inconsistent with the 05 Dec 2025 milestones item (21 Nov 2025) and is presumably a typo."
   },
   {
    "id": "R249",
@@ -11793,14 +11793,14 @@
    "type": "mission-page",
    "authors": "",
    "org": "ESA eoPortal / JAXA",
-   "title": "ALOS-2 (Advanced Land Observing Satellite-2) / Daichi-2 - eoPortal (launched 24 May 2014; PALSAR-2 L-band SAR; JAXA; operational, extended)",
+   "title": "ALOS-2 (Advanced Land Observing Satellite-2) / Daichi-2",
    "venue": "ESA eoPortal satellite mission directory",
    "year": 2026,
    "doi": "",
    "url": "https://www.eoportal.org/satellite-missions/alos-2",
    "accessed": "2026-11-04",
    "verified": "url-fetched",
-   "note": ""
+   "note": "Launched 24 May 2014; PALSAR-2 L-band SAR; JAXA; operational, extended"
   },
   {
    "id": "R253",
@@ -11823,14 +11823,14 @@
    "type": "mission-page",
    "authors": "",
    "org": "CONAE",
-   "title": "SAOCOM - CONAE (misión: SAOCOM 1A lanzado 7 de octubre de 2018, SAOCOM 1B 30 de agosto de 2020; instrumentos activos en microondas)",
+   "title": "SAOCOM",
    "venue": "CONAE / argentina.gob.ar mission page",
    "year": 2026,
    "doi": "",
    "url": "https://www.argentina.gob.ar/ciencia/conae/misiones-espaciales/saocom",
    "accessed": "2026-11-04",
    "verified": "url-fetched",
-   "note": ""
+   "note": "Misión: SAOCOM 1A lanzado 7 de octubre de 2018, SAOCOM 1B 30 de agosto de 2020; instrumentos activos en microondas"
   },
   {
    "id": "R255",
@@ -11838,14 +11838,14 @@
    "type": "mission-page",
    "authors": "",
    "org": "ISRO",
-   "title": "NISAR – NASA ISRO Synthetic Aperture Radar Mission (ISRO: GSLV-F16 launch 30 July 2025; L-band SAR (NASA), S-band SAR (SAC-ISRO); GSLV-F16 delivered NISAR to orbit)",
+   "title": "NISAR – NASA ISRO Synthetic Aperture Radar Mission",
    "venue": "ISRO mission page",
    "year": 2025,
    "doi": "",
    "url": "https://www.isro.gov.in/Mission_GSLVF16_NISAR_Home.html",
    "accessed": "2026-11-04",
    "verified": "url-fetched",
-   "note": ""
+   "note": "ISRO: GSLV-F16 launch 30 July 2025; L-band SAR (NASA), S-band SAR (SAC-ISRO); GSLV-F16 delivered NISAR to orbit"
   },
   {
    "id": "R256",
@@ -11853,14 +11853,14 @@
    "type": "mission-page",
    "authors": "",
    "org": "ESA",
-   "title": "Biomass - ESA Earth Online mission page (launched 29 April 2025; satellite and radar fully commissioned; Level-1 data stream openly available)",
+   "title": "Biomass",
    "venue": "ESA Earth Online",
    "year": 2026,
    "doi": "",
    "url": "https://earth.esa.int/eogateway/missions/biomass",
    "accessed": "2026-11-04",
    "verified": "url-fetched",
-   "note": ""
+   "note": "Launched 29 April 2025; satellite and radar fully commissioned; Level-1 data stream openly available"
   },
   {
    "id": "R257",
@@ -11868,14 +11868,14 @@
    "type": "mission-page",
    "authors": "",
    "org": "ESA",
-   "title": "Biomass' first open data products now available (ESA news, 19 Dec 2025: Level-1A, 1B, 1C and Level-2A made available; all mission elements fully operational)",
+   "title": "Biomass' first open data products now available",
    "venue": "ESA Earth Online news",
    "year": 2025,
    "doi": "",
    "url": "https://earth.esa.int/eogateway/news/biomass-first-open-data-products-now-available",
    "accessed": "2026-11-04",
    "verified": "url-fetched",
-   "note": ""
+   "note": "19 Dec 2025: Level-1A, 1B, 1C and Level-2A made available; all mission elements fully operational"
   },
   {
    "id": "R258",
@@ -11913,7 +11913,7 @@
    "type": "mission-page",
    "authors": "",
    "org": "NASA",
-   "title": "Mission Overview – NISAR Quick Facts",
+   "title": "Mission Overview - NISAR Quick Facts",
    "venue": "NASA Science mission page",
    "year": 2026,
    "doi": "",
@@ -12483,14 +12483,14 @@
    "type": "mission-page",
    "authors": "",
    "org": "ESA",
-   "title": "ESA authorises Airbus to begin Aeolus-2 development (ESA, 02/07/2026: authorisation signed 29 June 2026 with Airbus Defence and Space UK; launch in 2034)",
+   "title": "ESA authorises Airbus to begin Aeolus-2 development",
    "venue": "ESA web page",
    "year": 2026,
    "doi": "",
    "url": "https://www.esa.int/ESA_Multimedia/Images/2025/07/ESA_authorises_Airbus_to_begin_Aeolus-2_development",
    "accessed": "2026-11-04",
    "verified": "url-fetched",
-   "note": ""
+   "note": "02/07/2026: authorisation signed 29 June 2026 with Airbus Defence and Space UK; launch in 2034"
   },
   {
    "id": "R299",
@@ -12498,14 +12498,14 @@
    "type": "mission-page",
    "authors": "",
    "org": "WMO",
-   "title": "WMO OSCAR/Space: Satellite Programme 'Eumetsat Polar System - Aeolus' (EPS-Aeolus; EUMETSAT and ESA; EPS-Aeolus 2 listed 2034–2039; planned)",
+   "title": "Details for Satellite Programme: EPS-Aeolus",
    "venue": "WMO OSCAR/Space database",
    "year": 2026,
    "doi": "",
    "url": "https://space.oscar.wmo.int/satelliteprogrammes/view/eps_aeolus",
    "accessed": "2026-11-04",
    "verified": "url-fetched",
-   "note": ""
+   "note": "Satellite Programme 'Eumetsat Polar System - Aeolus' (EPS-Aeolus; EUMETSAT and ESA; EPS-Aeolus 2 listed 2034–2039; planned)"
   },
   {
    "id": "R300",
@@ -12603,14 +12603,14 @@
    "type": "mission-page",
    "authors": "",
    "org": "CNES",
-   "title": "MERLIN | CNES (project page updated 09 Dec 2025: methane IPDA lidar supplied by DLR; launch scheduled 2029)",
+   "title": "MERLIN",
    "venue": "CNES project page",
    "year": 2025,
    "doi": "",
    "url": "https://cnes.fr/en/projects/merlin",
    "accessed": "2026-11-04",
    "verified": "url-fetched",
-   "note": ""
+   "note": "Updated 09 Dec 2025: methane IPDA lidar supplied by DLR; launch scheduled 2029"
   },
   {
    "id": "R307",
@@ -13398,14 +13398,14 @@
    "type": "report",
    "authors": "",
    "org": "NASA GSFC",
-   "title": "NICER / ISS Science Nugget for November 17, 2017: first autonomous real-time X-ray pulsar navigation (SEXTANT) on NICER — flight software initiated 9 Nov 2017 20:33:27 UTC; <10 km RSS error reached in ~7.5 h during a 2.2-day autonomous experiment",
+   "title": "Autonomous X-ray Navigation Successfully Demonstrated",
    "venue": "NASA GSFC HEASARC NICER science nugget",
    "year": 2017,
    "doi": "",
    "url": "https://heasarc.gsfc.nasa.gov/docs/nicer/science_nuggets/20171117.html",
    "accessed": "2026-11-04",
    "verified": "url-fetched",
-   "note": ""
+   "note": "NICER / ISS Science Nugget for November 17, 2017: first autonomous real-time X-ray pulsar navigation (SEXTANT) on NICER — flight software initiated 9 Nov 2017 20:33:27 UTC; <10 km RSS error reached in ~7.5 h during a 2.2-day autonomous experiment"
   },
   {
    "id": "R360",
@@ -13428,14 +13428,14 @@
    "type": "mission-page",
    "authors": "",
    "org": "NASA",
-   "title": "Station Explorer for X-Ray Timing and Navigation (SEXTANT) - NASA Science (technology-demonstration enhancement to NICER on the ISS)",
+   "title": "Station Explorer for X-Ray Timing and Navigation (SEXTANT)",
    "venue": "NASA Science page",
    "year": 2025,
    "doi": "",
    "url": "https://science.nasa.gov/?p=497044",
    "accessed": "2026-11-04",
    "verified": "url-fetched",
-   "note": ""
+   "note": "Technology-demonstration enhancement to NICER on the ISS"
   },
   {
    "id": "R362",
@@ -13863,14 +13863,14 @@
    "type": "mission-page",
    "authors": "",
    "org": "ESA eoPortal / NASA",
-   "title": "STPSat6-LCRD (Laser Communications Relay Demonstration) - eoPortal (launched 7 Dec 2021 on Atlas V 551, STP-3; GEO; OGS-1 Table Mountain with Atmospheric Channel Monitoring system, OGS-2 Haleakala; adaptive optics)",
+   "title": "STPSat6-LCRD (Laser Communications Relay Demonstration)",
    "venue": "ESA eoPortal satellite mission directory",
    "year": 2026,
    "doi": "",
    "url": "https://eoportal.org/satellite-missions/stpsat6-lcrd",
    "accessed": "2026-11-04",
    "verified": "url-fetched",
-   "note": ""
+   "note": "Launched 7 Dec 2021 on Atlas V 551, STP-3; GEO; OGS-1 Table Mountain with Atmospheric Channel Monitoring system, OGS-2 Haleakala; adaptive optics"
   },
   {
    "id": "R391",
@@ -13878,14 +13878,14 @@
    "type": "mission-page",
    "authors": "",
    "org": "ESA",
-   "title": "First SpaceDataHighway laser relay in orbit (ESA Press Release N° 2–2016, 29 Jan 2016: EDRS-A laser terminal launched on Eutelsat-9B; 1.8 Gbit/s GEO–LEO laser relay)",
+   "title": "N° 2-2016: First SpaceDataHighway laser relay in orbit",
    "venue": "ESA press release",
    "year": 2016,
    "doi": "",
    "url": "https://www.esa.int/Newsroom/Press_Releases/First_SpaceDataHighway_laser_relay_in_orbit",
    "accessed": "2026-11-04",
    "verified": "url-fetched",
-   "note": ""
+   "note": "29 Jan 2016: EDRS-A laser terminal launched on Eutelsat-9B; 1.8 Gbit/s GEO–LEO laser relay"
   },
   {
    "id": "R392",
@@ -13983,14 +13983,14 @@
    "type": "mission-page",
    "authors": "",
    "org": "WMO",
-   "title": "WMO OSCAR/Space: Satellite FY-4M1 ('FY-4 Microwave1'; CMA; status Planned; launch ≥2026; geostationary; instruments MWS 'Microwave Sounder for Geostationary Orbit' and ENAI; 'Instrument description limited at present')",
+   "title": "Satellite: FY-4M1",
    "venue": "WMO OSCAR/Space database",
    "year": 2026,
    "doi": "",
    "url": "https://space.oscar.wmo.int/satellites/view/fy_4m1",
    "accessed": "2026-11-04",
    "verified": "url-fetched",
-   "note": ""
+   "note": "'FY-4 Microwave1'; CMA; status Planned; launch ≥2026; geostationary; instruments MWS 'Microwave Sounder for Geostationary Orbit' and ENAI; 'Instrument description limited at present'"
   },
   {
    "id": "R399",
@@ -14043,14 +14043,14 @@
    "type": "mission-page",
    "authors": "",
    "org": "NASA",
-   "title": "Cold Atom Laboratory - NASA Science (launched to the ISS 21 May 2018, installed a few months later; first Bose-Einstein condensates in Earth orbit)",
+   "title": "Cold Atom Laboratory",
    "venue": "NASA Science mission page",
    "year": 2026,
    "doi": "",
    "url": "https://science.nasa.gov/mission/cold-atom-laboratory/",
    "accessed": "2026-11-04",
    "verified": "url-fetched",
-   "note": ""
+   "note": "Launched to the ISS 21 May 2018, installed a few months later; first Bose-Einstein condensates in Earth orbit"
   },
   {
    "id": "R403",
@@ -14058,14 +14058,14 @@
    "type": "mission-page",
    "authors": "",
    "org": "DLR",
-   "title": "CARIOQA-PMP – Cold Atom Rubidium Interferometer in Orbit for Quantum Accelerometery – Pathfinder Mission Preparation",
+   "title": "CARIOQA-PMP",
    "venue": "DLR Institute for Satellite Geodesy and Inertial Sensing project page",
    "year": 2026,
    "doi": "",
    "url": "https://www.dlr.de/en/si/research-transfer/projects/carioqa-pmp",
    "accessed": "2026-11-04",
    "verified": "url-fetched",
-   "note": "EU project 101081775 led by CNES with DLR; engineering model of quantum accelerometer; pathfinder launch targeted by end of decade"
+   "note": "Cold Atom Rubidium Interferometer in Orbit for Quantum Accelerometry, Pathfinder Mission Preparation. EU project 101081775 led by CNES with DLR; engineering model of quantum accelerometer; pathfinder launch targeted by end of decade"
   },
   {
    "id": "R404",
@@ -14253,14 +14253,14 @@
    "type": "mission-page",
    "authors": "",
    "org": "NASA",
-   "title": "Quantum Rydberg Radar for Surface, Topography, and Vegetation (NIAC Phase II)",
+   "title": "Quantum Rydberg Radar for Surface, Topography, and Vegetation",
    "venue": "NASA Innovative Advanced Concepts, Phase II selection, published 2023-04-06",
    "year": 2023,
    "doi": "",
    "url": "https://www.nasa.gov/general/quantum-rydberg-radar-for-surface-topography-and-vegetation/",
    "accessed": "2026-11-04",
    "verified": "url-fetched",
-   "note": "PI Darmindra Arumugam, JPL. Page states Phase I made the first known Rydberg measurement of satellite (XM) signals and that Phase II prepares a high-altitude balloon demonstration and future space validation."
+   "note": "NIAC Phase II. PI Darmindra Arumugam, JPL. Page states Phase I made the first known Rydberg measurement of satellite (XM) signals and that Phase II prepares a high-altitude balloon demonstration and future space validation."
   },
   {
    "id": "R417",
@@ -14268,14 +14268,14 @@
    "type": "mission-page",
    "authors": "",
    "org": "NASA ESTO",
-   "title": "Project Selections for ACT-22: Quantum Atomic Rydberg Radiometer for Earth Measurements (QuARREM)",
+   "title": "Project Selections for ACT-22",
    "venue": "NASA Earth Science Technology Office, Advanced Component Technology selections, 2022-12-05",
    "year": 2022,
    "doi": "",
    "url": "https://esto.nasa.gov/project-selections-for-act-22/",
    "accessed": "2026-11-04",
    "verified": "url-fetched",
-   "note": "Entry lists PI Shane Verploegh, ColdQuanta Inc. (now Infleqtion); vapour-cell Rydberg radiometer replacing RF front-end, 20-200 GHz, TRL 2 to 4 goal."
+   "note": "Entry: Quantum Atomic Rydberg Radiometer for Earth Measurements (QuARREM). Entry lists PI Shane Verploegh, ColdQuanta Inc. (now Infleqtion); vapour-cell Rydberg radiometer replacing RF front-end, 20-200 GHz, TRL 2 to 4 goal."
   },
   {
    "id": "R418",
@@ -14688,7 +14688,7 @@
    "type": "mission-page",
    "authors": "",
    "org": "NASA ESTO",
-   "title": "The Quantum Leap: NASA's Next-Generation Tools for Earth Science",
+   "title": "The Quantum Leap: NASA’s Next-Generation Tools for Earth Science",
    "venue": "NASA Earth Science Technology Office, 13 April 2026",
    "year": 2026,
    "doi": "",
@@ -14703,14 +14703,14 @@
    "type": "mission-page",
    "authors": "",
    "org": "DLR",
-   "title": "Cold Atom Rubidium Interferometer in Orbit for Quantum Accelerometry - Phase B (CARIOQA-PHB)",
+   "title": "CARIOQA-PHB",
    "venue": "DLR Institute for Satellite Geodesy and Inertial Sensing project page",
    "year": 2025,
    "doi": "",
    "url": "https://www.dlr.de/en/si/research-transfer/projects/carioqa-project-phases/carioqa-phb",
    "accessed": "2026-11-04",
    "verified": "url-fetched",
-   "note": "Phase A completed June 2025; Phase B kick-off October 2025 in Toulouse, 24 months, technologies to TRL 6; consortium of 14 European partners with CNES and DLR; ESA not mentioned; no launch date given."
+   "note": "Cold Atom Rubidium Interferometer in Orbit for Quantum Accelerometry, Phase B. Phase A completed June 2025; Phase B kick-off October 2025 in Toulouse, 24 months, technologies to TRL 6; consortium of 14 European partners with CNES and DLR; ESA not mentioned; no launch date given."
   },
   {
    "id": "R447",
@@ -15018,14 +15018,14 @@
    "type": "report",
    "authors": "",
    "org": "US Navy / Office of Naval Research",
-   "title": "Navy SBIR 21.1 Topic N211-089: Airborne LIDAR Ocean Temperature Measurement",
+   "title": "Airborne LIDAR Ocean Temperature Measurement",
    "venue": "Navy SBIR/STTR Program topic page (ONR), opened 14 Jan 2021",
    "year": 2021,
    "doi": "",
    "url": "https://navysbir.com/n21_1/N211-089.htm",
    "accessed": "2026-11-04",
    "verified": "url-fetched",
-   "note": "Topic names Brillouin lidar explicitly; Phase I concept, Phase II water-tank prototype, Phase III platform engineering."
+   "note": "Navy SBIR 21.1 Topic N211-089. Topic names Brillouin lidar explicitly; Phase I concept, Phase II water-tank prototype, Phase III platform engineering."
   },
   {
    "id": "R468",
@@ -15033,14 +15033,14 @@
    "type": "report",
    "authors": "",
    "org": "US Navy / Office of Naval Research (SBIR/STTR Transition Program)",
-   "title": "BOLTS (Brillouin Ocean LiDAR Technology System) - Topic N211-089, Areté Associates, Contract N68335-22-C-0622",
+   "title": "BOLTS (Brillouin Ocean LiDAR Technology System)",
    "venue": "Department of the Navy SBIR/STTR Transition Program quad chart, ONR approval 2024-10-31-287",
    "year": 2024,
    "doi": "",
    "url": "https://workspace.navystp.com/quad-chart-vtm/N68335-22-C-0622",
    "accessed": "2026-11-04",
    "verified": "url-fetched",
-   "note": "Contract ending 19 Feb 2025; milestones: lab testing TRL 4 Q4 FY24, ocean testing TRL 5 Q2 FY25 (planned). Transition targets MINEnet, NAVAIR ASW; NASA/NOAA listed as other opportunities."
+   "note": "Topic N211-089, Areté Associates, Contract N68335-22-C-0622. Contract ending 19 Feb 2025; milestones: lab testing TRL 4 Q4 FY24, ocean testing TRL 5 Q2 FY25 (planned). Transition targets MINEnet, NAVAIR ASW; NASA/NOAA listed as other opportunities."
   },
   {
    "id": "R469",
@@ -15393,14 +15393,14 @@
    "type": "mission-page",
    "authors": "",
    "org": "ESA (eoPortal)",
-   "title": "Aeolus (ADM-Aeolus) - ESA Earth Explorer mission and ALADIN Doppler wind lidar",
+   "title": "Aeolus / formerly ADM (Atmospheric Dynamics Mission)",
    "venue": "eoPortal satellite-missions directory",
    "year": 2023,
    "doi": "",
    "url": "https://www.eoportal.org/satellite-missions/aeolus",
    "accessed": "2026-11-04",
    "verified": "url-fetched",
-   "note": "Launch 22 Aug 2018, nominal operations ended 30 Apr 2023; Rayleigh channel (double-edge Fabry-Perot) used for molecular-backscatter wind; temperature is not a mission product."
+   "note": "ESA Earth Explorer mission and ALADIN Doppler wind lidar. Launch 22 Aug 2018, nominal operations ended 30 Apr 2023; Rayleigh channel (double-edge Fabry-Perot) used for molecular-backscatter wind; temperature is not a mission product."
   },
   {
    "id": "R493",
@@ -15483,7 +15483,7 @@
    "type": "report",
    "authors": "Israel, D.; Edwards, B.; Butler, R.; Moores, J.; Piazzolla, S.; Woodward, J.; et al.",
    "org": "NASA Goddard Space Flight Center",
-   "title": "Completion of NASA's Two-Year Laser Communications Relay Demonstration (LCRD) Experiment Program",
+   "title": "Completion of NASA’s Two-Year Laser Communications Relay Demonstration (LCRD) Experiment Program",
    "venue": "Ka and Broadband Communications Conference, Seattle, 24-27 Sep 2024; NTRS 20240011470",
    "year": 2024,
    "doi": "",
